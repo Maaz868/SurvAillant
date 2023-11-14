@@ -1,0 +1,657 @@
+[
+    {
+        "id": "a3ff5c14e636f81f",
+        "type": "tab",
+        "label": "Flow 3",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "5698ca3986954cde",
+        "type": "modbus-read",
+        "z": "a3ff5c14e636f81f",
+        "name": "Read Holders",
+        "topic": "t",
+        "showStatusActivities": false,
+        "logIOActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "1",
+        "dataType": "HoldingRegister",
+        "adr": "0",
+        "quantity": "5",
+        "rate": "4",
+        "rateUnit": "s",
+        "delayOnStart": true,
+        "startDelayTime": "5",
+        "server": "1f2b51416298d355",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "x": 210,
+        "y": 620,
+        "wires": [
+            [
+                "3766e3c8290632fb"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "b2e256d8f4ccaee6",
+        "type": "modbus-read",
+        "z": "a3ff5c14e636f81f",
+        "name": "Read Coils",
+        "topic": "uper",
+        "showStatusActivities": false,
+        "logIOActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "1",
+        "dataType": "Coil",
+        "adr": "5",
+        "quantity": "6",
+        "rate": "4",
+        "rateUnit": "s",
+        "delayOnStart": true,
+        "startDelayTime": "7",
+        "server": "1f2b51416298d355",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "x": 200,
+        "y": 820,
+        "wires": [
+            [
+                "26d8e646c59a8029"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "a2541c18fa04f651",
+        "type": "debug",
+        "z": "a3ff5c14e636f81f",
+        "name": "debug 13",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 920,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "26d8e646c59a8029",
+        "type": "function",
+        "z": "a3ff5c14e636f81f",
+        "name": "UpdatingValues",
+        "func": "// Accessing global variables\n// Accessing global variables\nvar voltage = global.get(\"voltage\");\nvar r1 = global.get(\"R1\");\nvar r2 = global.get(\"R2\");\nvar c1 = global.get(\"C1\");\nvar c2 = global.get(\"C2\");\n\n// Accessing control variables from Modbus Read Node\nvar incLoad1 = msg.payload[0];\nvar decLoad1 = msg.payload[1];\nvar incLoad2 = msg.payload[2];\nvar decLoad2 = msg.payload[3]; \nvar closeLoad1 = msg.payload[4]; \nvar closeLoad2 = msg.payload[5];\n// console.log(closeLoad1)\n\n\nif (incLoad1 === true) {\n    // Increase resistance for Load 1\n    // console.log(\"inc1 true\");\n    r1 += 100;\n}\nif (decLoad1 === true) {\n    // console.log(\"dec1 true\");\n    // Decrease resistance for Load 1\n    r1 -= 100;\n} \nif (incLoad1 === false && decLoad1 === false) {\n    r1 += (Math.random() < 0.5 ? -1 : 1) * 100;\n}\n\n// Logic for Load 2\nif (incLoad2 === true) {\n    // console.log(\"inc2 true\");\n    // Increase resistance for Load 2\n    r2 += 100;\n}\nif (decLoad2 === true) {\n    // console.log(\"dec2 true\");\n    // Decrease resistance for Load 2\n    r2 -= 100;\n} \nif (incLoad2 === false && decLoad2=== false) {\n    r2 += (Math.random() < 0.5 ? -1 : 1) * 50;\n}\n\n\n\nc1 = (voltage / r1) * 1000; // Convert to microamperes\nc1 = parseFloat(c1.toFixed(2)); // Round to two decimal places\nc1 = c1 * 1000;\n\nc2 = (voltage / r2) * 1000; // Convert to microamperes\nc2 = parseFloat(c2.toFixed(2)); // Round to two decimal places\nc2 = c2 * 1000;\n\n\n\n\n\nglobal.set(\"voltage\", voltage);\nglobal.set(\"R1\", r1);\nglobal.set(\"R2\", r2);\nglobal.set(\"C1\", c1);\nglobal.set(\"C2\", c2);\n// console.log(C1)\n\nvar msg1 = { payload: voltage };\nvar msg2 = { payload: r1 };\nvar msg3 = { payload: r2 };\nvar msg4 = { payload: c1 };\nvar msg5 = { payload: c2 };\n\n// Pass the messages to the next node in the flow\nreturn [msg1, msg2, msg3, msg4, msg5];",
+        "outputs": 5,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 820,
+        "wires": [
+            [
+                "4699589b5dc3082c"
+            ],
+            [
+                "c1fdcfb21037a7c9"
+            ],
+            [
+                "4955cef0c51c326a"
+            ],
+            [
+                "e3bce42db0e726ac"
+            ],
+            [
+                "1e93a19b49e546e4"
+            ]
+        ]
+    },
+    {
+        "id": "4699589b5dc3082c",
+        "type": "modbus-write",
+        "z": "a3ff5c14e636f81f",
+        "name": "VoltageWrite",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "1",
+        "dataType": "HoldingRegister",
+        "adr": "0",
+        "quantity": "1",
+        "server": "1f2b51416298d355",
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": false,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 710,
+        "y": 740,
+        "wires": [
+            [
+                "a2541c18fa04f651"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "c1fdcfb21037a7c9",
+        "type": "modbus-write",
+        "z": "a3ff5c14e636f81f",
+        "name": "R1Write",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "1",
+        "dataType": "HoldingRegister",
+        "adr": "1",
+        "quantity": "1",
+        "server": "1f2b51416298d355",
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": false,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 700,
+        "y": 820,
+        "wires": [
+            [
+                "a2541c18fa04f651"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "4955cef0c51c326a",
+        "type": "modbus-write",
+        "z": "a3ff5c14e636f81f",
+        "name": "R2Write",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "1",
+        "dataType": "HoldingRegister",
+        "adr": "2",
+        "quantity": "1",
+        "server": "1f2b51416298d355",
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": false,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 700,
+        "y": 900,
+        "wires": [
+            [
+                "a2541c18fa04f651"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "e3bce42db0e726ac",
+        "type": "modbus-write",
+        "z": "a3ff5c14e636f81f",
+        "name": "C1Write",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "1",
+        "dataType": "HoldingRegister",
+        "adr": "3",
+        "quantity": "1",
+        "server": "1f2b51416298d355",
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": false,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 700,
+        "y": 960,
+        "wires": [
+            [
+                "a2541c18fa04f651"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "1e93a19b49e546e4",
+        "type": "modbus-write",
+        "z": "a3ff5c14e636f81f",
+        "name": "C2Write",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "1",
+        "dataType": "HoldingRegister",
+        "adr": "4",
+        "quantity": "1",
+        "server": "1f2b51416298d355",
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": false,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 700,
+        "y": 1020,
+        "wires": [
+            [
+                "a2541c18fa04f651"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "3766e3c8290632fb",
+        "type": "function",
+        "z": "a3ff5c14e636f81f",
+        "name": "function 1",
+        "func": "var voltage = msg.payload[0];\nvar resistanceLoad1 = msg.payload[1];\nvar resistanceLoad2 = msg.payload[2];\nvar currentLoad1 = msg.payload[3];\nvar currentLoad2 = msg.payload[4];\nvar load1 = false;\nvar load2 = false;\n\nif (resistanceLoad1 === 0 && currentLoad1 === 0 ) {\n    resistanceLoad1 = 5000;\n    currentLoad1 = 2400;\n}\n\nif (resistanceLoad2 === 0 && currentLoad2 === 0) {\n    resistanceLoad2 = 1000;\n    currentLoad2 = 12000;\n}\n\n\n\n\n\nglobal.set(\"voltage\", voltage);\nglobal.set(\"R1\", resistanceLoad1);\nglobal.set(\"R2\", resistanceLoad2);\nglobal.set(\"C1\", currentLoad1);\nglobal.set(\"C2\", currentLoad2);\n\nvar msg1 = { payload: false };\nvar msg2 = { payload: false };\n\n// Pass the messages to the next node in the flow\nreturn [msg1, msg2];\n\n// return msg;\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 620,
+        "wires": [
+            [
+                "d2c869b86a5a5e5a"
+            ],
+            [
+                "d195f70607ac045b"
+            ]
+        ]
+    },
+    {
+        "id": "2eed66e57de8f6f3",
+        "type": "modbus-server",
+        "z": "a3ff5c14e636f81f",
+        "name": "server",
+        "logEnabled": false,
+        "hostname": "10.7.52.144",
+        "serverPort": "502",
+        "responseDelay": 100,
+        "delayUnit": "ms",
+        "coilsBufferSize": "10",
+        "holdingBufferSize": "10",
+        "inputBufferSize": "0",
+        "discreteBufferSize": "0",
+        "showErrors": false,
+        "x": 430,
+        "y": 80,
+        "wires": [
+            [
+                "f97fd102bacaaca8"
+            ],
+            [
+                "f97fd102bacaaca8"
+            ],
+            [
+                "f97fd102bacaaca8"
+            ],
+            [
+                "f97fd102bacaaca8"
+            ],
+            [
+                "f97fd102bacaaca8"
+            ]
+        ]
+    },
+    {
+        "id": "4808bb50d3a52089",
+        "type": "inject",
+        "z": "a3ff5c14e636f81f",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 220,
+        "y": 100,
+        "wires": [
+            [
+                "2eed66e57de8f6f3"
+            ]
+        ]
+    },
+    {
+        "id": "f97fd102bacaaca8",
+        "type": "debug",
+        "z": "a3ff5c14e636f81f",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 700,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "158ea9223813d5d0",
+        "type": "inject",
+        "z": "a3ff5c14e636f81f",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 300,
+        "wires": [
+            [
+                "4be508a75b470c90"
+            ]
+        ]
+    },
+    {
+        "id": "4be508a75b470c90",
+        "type": "function",
+        "z": "a3ff5c14e636f81f",
+        "name": "function 3",
+        "func": "// Set initial values\nvar voltage = 12;           // Voltage in volts\nvar resistanceLoad1 = 5000;  // Resistance for Load 1 in ohms\nvar resistanceLoad2 = 1000;  // Resistance for Load 2 in ohms\n\n// Calculate initial currents in microamperes\nvar currentLoad1_microamps = (voltage / resistanceLoad1) * 1000; // Convert to microamperes\ncurrentLoad1_microamps = parseFloat(currentLoad1_microamps.toFixed(2)); // Round to two decimal places\ncurrentLoad1_microamps = currentLoad1_microamps * 1000\n\nvar currentLoad2_microamps = (voltage / resistanceLoad2) * 1000; // Convert to microamperes\ncurrentLoad2_microamps = parseFloat(currentLoad2_microamps.toFixed(2)); // Round to two decimal places\ncurrentLoad2_microamps = currentLoad2_microamps * 1000\n\n// Create messages for holding registers\nvar msg1 = { payload: voltage };\nvar msg2 = { payload: resistanceLoad1 };\nvar msg3 = { payload: resistanceLoad2 };\nvar msg4 = { payload: currentLoad1_microamps };\nvar msg5 = { payload: currentLoad2_microamps };\n\n// Pass the messages to the next node in the flow\nreturn [msg1, msg2, msg3, msg4, msg5];\n",
+        "outputs": 5,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 280,
+        "wires": [
+            [
+                "539a46e3ab88579a"
+            ],
+            [
+                "2e1675b8200e186e"
+            ],
+            [
+                "afcd43ca2fc54cde"
+            ],
+            [
+                "0e7cfa4afd2378db"
+            ],
+            [
+                "fd89f6131f879d9d"
+            ]
+        ]
+    },
+    {
+        "id": "539a46e3ab88579a",
+        "type": "modbus-write",
+        "z": "a3ff5c14e636f81f",
+        "name": "VoltageWrite",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "1",
+        "dataType": "HoldingRegister",
+        "adr": "0",
+        "quantity": "1",
+        "server": "1f2b51416298d355",
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": false,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 610,
+        "y": 200,
+        "wires": [
+            [
+                "33810fd0157c8f42"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "2e1675b8200e186e",
+        "type": "modbus-write",
+        "z": "a3ff5c14e636f81f",
+        "name": "R1Write",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "1",
+        "dataType": "HoldingRegister",
+        "adr": "1",
+        "quantity": "1",
+        "server": "1f2b51416298d355",
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": false,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 600,
+        "y": 260,
+        "wires": [
+            [
+                "33810fd0157c8f42"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "afcd43ca2fc54cde",
+        "type": "modbus-write",
+        "z": "a3ff5c14e636f81f",
+        "name": "R2Write",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "1",
+        "dataType": "HoldingRegister",
+        "adr": "2",
+        "quantity": "1",
+        "server": "1f2b51416298d355",
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": false,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 600,
+        "y": 320,
+        "wires": [
+            [
+                "33810fd0157c8f42"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "33810fd0157c8f42",
+        "type": "debug",
+        "z": "a3ff5c14e636f81f",
+        "name": "debug 14",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 860,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "0e7cfa4afd2378db",
+        "type": "modbus-write",
+        "z": "a3ff5c14e636f81f",
+        "name": "C1Write",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "1",
+        "dataType": "HoldingRegister",
+        "adr": "3",
+        "quantity": "1",
+        "server": "1f2b51416298d355",
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": false,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 600,
+        "y": 400,
+        "wires": [
+            [
+                "33810fd0157c8f42"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "fd89f6131f879d9d",
+        "type": "modbus-write",
+        "z": "a3ff5c14e636f81f",
+        "name": "C2Write",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "1",
+        "dataType": "HoldingRegister",
+        "adr": "4",
+        "quantity": "1",
+        "server": "1f2b51416298d355",
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": false,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 600,
+        "y": 460,
+        "wires": [
+            [
+                "33810fd0157c8f42"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "d2c869b86a5a5e5a",
+        "type": "modbus-write",
+        "z": "a3ff5c14e636f81f",
+        "name": "Falseload1",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "1",
+        "dataType": "Coil",
+        "adr": "9",
+        "quantity": "1",
+        "server": "1f2b51416298d355",
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": false,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 650,
+        "y": 560,
+        "wires": [
+            [
+                "8968a308e89f7bbd"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "d195f70607ac045b",
+        "type": "modbus-write",
+        "z": "a3ff5c14e636f81f",
+        "name": "FalseLoad2",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "1",
+        "dataType": "Coil",
+        "adr": "10",
+        "quantity": "1",
+        "server": "1f2b51416298d355",
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": false,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 650,
+        "y": 640,
+        "wires": [
+            [
+                "8968a308e89f7bbd"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "8968a308e89f7bbd",
+        "type": "debug",
+        "z": "a3ff5c14e636f81f",
+        "name": "debug 15",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 840,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "1f2b51416298d355",
+        "type": "modbus-client",
+        "name": "local",
+        "clienttype": "tcp",
+        "bufferCommands": true,
+        "stateLogEnabled": false,
+        "queueLogEnabled": false,
+        "failureLogEnabled": false,
+        "tcpHost": "10.7.52.144",
+        "tcpPort": "502",
+        "tcpType": "DEFAULT",
+        "serialPort": "/dev/ttyUSB",
+        "serialType": "RTU-BUFFERD",
+        "serialBaudrate": "9600",
+        "serialDatabits": "8",
+        "serialStopbits": "1",
+        "serialParity": "none",
+        "serialConnectionDelay": "100",
+        "serialAsciiResponseStartDelimiter": "",
+        "unit_id": 1,
+        "commandDelay": 1,
+        "clientTimeout": 1000,
+        "reconnectOnTimeout": false,
+        "reconnectTimeout": 2000,
+        "parallelUnitIdsAllowed": false
+    }
+]
