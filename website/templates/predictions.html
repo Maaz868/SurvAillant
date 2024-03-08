@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Packet Predictions</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .prediction-table {
+            border: 1px solid #ccc;
+            max-height: 200px;
+            overflow-y: auto;
+            margin: 10px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Packet Predictions</h1>
+
+    <div class="prediction-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Prediction</th>
+                </tr>
+            </thead>
+            <tbody id="prediction-table-1"></tbody>
+        </table>
+    </div>
+
+    <div class="prediction-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Prediction</th>
+                </tr>
+            </thead>
+            <tbody id="prediction-table-2"></tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        var socket1 = new WebSocket("ws://" + window.location.host + "/ws/anomalyprediction/");
+        var socket2 = new WebSocket("ws://" + window.location.host + "/ws/securityprediction/");
+
+        socket1.onmessage = function (event) {
+            var predictionInfo = JSON.parse(event.data);
+            var tableRow = "<tr><td>" + predictionInfo.prediction + "</td></tr>";
+            $("#prediction-table-1").append(tableRow);
+        };
+
+        socket2.onmessage = function (event) {
+            var predictionInfo = JSON.parse(event.data);
+            var tableRow = "<tr><td>" + predictionInfo.prediction + "</td></tr>";
+            $("#prediction-table-2").append(tableRow);
+        };
+    </script>
+</body>
+
+</html>

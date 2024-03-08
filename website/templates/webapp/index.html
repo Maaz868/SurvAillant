@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication</title>
+</head>
+<body>
+
+ 
+    <h3>Welcome to my app</h3>
+
+    {% if user.is_authenticated %}
+    <h3>Hello {{ user.username }} </h3>
+    <h4>You've logged in. </h4>
+    <button type="submit"><a href="/signout">Sign Out</a></button>
+    {% else %}
+    <button type="submit"><a href="/signup">Sign up</a></button>
+    <button type="submit"><a href="/signin">Sign In</a></button>
+    {% endif %}
+
+
+</body>
+</html>

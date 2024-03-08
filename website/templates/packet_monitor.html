@@ -1,0 +1,30 @@
+<!-- myapp/templates/sniffer.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Packet Sniffer</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        var socket = new WebSocket("ws://" + window.location.host + "/ws/packet/");
+
+        socket.onmessage = function (event) {
+            var packet = JSON.parse(event.data);
+            var listItem = document.createElement("li");
+            listItem.textContent = packet.packet;
+            document.getElementById("packet-list").appendChild(listItem);
+        };
+
+        function applyFilter() {
+            var filterValue = document.getElementById("filter-input").value;
+            socket.send(JSON.stringify({ filter: filterValue }));
+        }
+    </script>
+</head>
+<body>
+    <h1>Packet Sniffer</h1>
+    <input type="text" id="filter-input" placeholder="Enter Filter">
+    <button onclick="applyFilter()">Apply Filter</button>
+    <ul id="packet-list"></ul>
+    <!-- <ul id="packet-list"></ul> -->
+</body>
+</html>
