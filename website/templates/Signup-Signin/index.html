@@ -30,6 +30,7 @@
                 <p class="account-text">Don't have an account? <a href="#" id="sign-up-btn2">Sign up</a></p>
             </form>
             <form action="signup" method="post" class="sign-up-form">
+                {% csrf_token %}
                 <h2 class="title">Sign up</h2>
                 <p class="social-text">Enter information to create an account</p>
                 <div class="input-field">

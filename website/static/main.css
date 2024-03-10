@@ -1,0 +1,255 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&family=Raleway&display=swap");
+
+/* Global styles */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+:root {
+  --intro-email-bg: hsl(217, 28%, 15%);
+  --main-bg: hsl(218, 28%, 13%);
+  --footer-bg: hsl(216, 53%, 9%);
+  --testimonials-bg: hsl(219, 30%, 18%);
+  --cyan: hsl(176, 68%, 64%);
+  --blue: hsl(198, 60%, 50%);
+  --white: hsl(0, 0%, 100%);
+}
+
+html {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  color: var(--white);
+  background: var(--main-bg);
+}
+
+h2,
+h3,
+nav,
+.cta {
+  font-family: "Raleway", sans-serif;
+  font-weight: 700;
+}
+
+ul,
+li {
+  list-style: none;
+}
+
+a {
+  color: var(--white);
+  text-decoration: none;
+}
+
+h2 {
+  font-size: 40px;
+}
+
+main {
+  position: relative;
+  padding-bottom: 200px;
+}
+
+/* nav style */
+
+.nav {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 73px 80px;
+  background: var(--intro-email-bg);
+}
+
+.nav-items {
+  display: flex;
+  align-items: center;
+}
+
+.nav-items :not(:last-child) {
+  padding-right: 56px;
+}
+
+/* hero section */
+.hero {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto;
+  text-align: center;
+  width: 100%;
+  min-height: 100vh;
+  background: var(--intro-email-bg) url("images/bg-curvy-desktop.svg") bottom
+    no-repeat;
+  background-size: 100% 270px;
+}
+
+.hero img {
+  width: 742px;
+  height: 538px;
+}
+
+.hero h2 {
+  width: 742px;
+  margin: 46px;
+}
+
+.hero p {
+  width: 742px;
+  font-size: 22px;
+  padding: 0 30px;
+}
+
+.cta {
+  color: var(--white);
+  width: 280px;
+  padding: 20px 0;
+  border-radius: 50px;
+  margin: 30px 0;
+  background: linear-gradient(to right, var(--cyan), var(--blue));
+  border: none;
+}
+
+/* features section */
+.features {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 94px 150px;
+  margin: 130px 0;
+  padding: 0 280px;
+}
+
+.feature {
+  text-align: center;
+}
+
+.feature h3 {
+  margin: 25px 0 12px 0;
+}
+
+/* Mobile 375px */
+
+@media (max-width: 375px) {
+  html {
+    font-size: 10px;
+  }
+
+  h2 {
+    font-size: 25px;
+  }
+
+  /* nav */
+  .nav {
+    padding: 24px 20px;
+  }
+
+  .nav-items :not(:last-child) {
+    padding-right: 23px;
+  }
+  .brand-logo img {
+    width: 82px;
+    height: 24px;
+  }
+
+  /* hero section */
+  .hero img {
+    width: 305px;
+    height: 225px;
+  }
+  .hero h2 {
+    width: 302px;
+    margin: 23px;
+  }
+  .hero p {
+    width: 292px;
+    font-size: 12px;
+    padding: 0 23px;
+  }
+
+  .cta {
+    width: 242px;
+    padding: 18px 0;
+  }
+
+  /* features section */
+  .features {
+    grid-template-columns: 1fr;
+    gap: 87px 0px;
+    padding: 0 38px;
+    margin: 100px 0;
+  }
+
+  /* More descriprion */
+
+  .extra-description {
+    flex-direction: column;
+    padding: 0 25px;
+  }
+
+  .img-box img {
+    height: 215px;
+    margin: 0px 0px 52px 0px;
+  }
+
+  /* Testimonials */
+  .testimonials {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 150px 22px;
+  }
+  .testimonial:first-child::before {
+    left: 4px;
+  }
+
+  /* sign up */
+  .sign-up {
+    padding: 40px 25px;
+    bottom: -175px;
+  }
+
+  form {
+    flex-direction: column;
+  }
+  input[type="email"],
+  input[type="submit"] {
+    width: 280px;
+    margin: 0px 0px 25px 0px;
+  }
+
+  /* footer */
+  footer {
+    grid-template-columns: 1fr;
+    padding: 280px 27px 42px 27px;
+    column-gap: 0;
+    row-gap: 20px;
+    grid-template-areas:
+      "logo"
+      "location"
+      "contact"
+      "links"
+      "more-links"
+      "social-icons";
+  }
+
+  .social-icons i{
+    font-size: 28px;
+  }
+
+  .fa-facebook{
+    justify-self: end;
+  }
+  .fa-twitter{
+    justify-self: center;
+  }
+  .fa-intagram{
+    justify-self: start;
+  }
+}

@@ -12,34 +12,121 @@ from collections import deque
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 import csv
 import numpy as np
+from .models import PacketEntry, NetworkTraffic, ProtocolCount, SecurityTraffic, AnomalyPackets, SecurityPackets
+from channels.db import database_sync_to_async
 
-class PacketConsumer(AsyncWebsocketConsumer):
+class DashBoardConsumer(AsyncWebsocketConsumer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.packets = []
+
     async def connect(self):
         await self.accept()
 
         def update_packets(packet):
-            filter_value = self.scope.get('filter_value', None)
-            if filter_value and packet.haslayer("IP"):
-                ip_src = packet["IP"].src
-                if ip_src == filter_value:
-                    asyncio.run(self.handle_packet(packet))
-            elif (filter_value is None or filter_value=='') and packet.haslayer("IP"):
-                asyncio.run(self.handle_packet(packet))
+            self.packets.append(packet)
+
+        asyncio.create_task(asyncio.to_thread(sniff, prn=update_packets, store=0))
+        asyncio.create_task(self.periodic_task())
+
+    async def disconnect(self, close_code):
+        pass
+
+    @database_sync_to_async
+    def save_protocol_count(self):
+        tcp_count = sum(1 for packet in self.packets if packet.haslayer("TCP"))
+        udp_count = sum(1 for packet in self.packets if packet.haslayer("UDP"))
+        modbus_count = sum(1 for packet in self.packets if packet.haslayer("Modbus"))
+        mqtt_count = sum(1 for packet in self.packets if packet.haslayer("MQTT"))
+        others_count = len(self.packets) - (tcp_count + udp_count + modbus_count + mqtt_count)
+
+        ProtocolCount.objects.create(
+            tcp_count=tcp_count,
+            udp_count=udp_count,
+            modbus_count=modbus_count,
+            mqtt_count=mqtt_count,
+            others_count=others_count
+        )
+
+    @database_sync_to_async
+    def save_packet_count(self, packet_count):
+        PacketEntry.objects.create(number_of_packets=packet_count)
+
+    async def periodic_task(self):
+        while True:
+            await asyncio.sleep(5)  # Wait for 5 seconds
+            packet_count = len(self.packets)
+            await self.save_protocol_count()
+            self.packets = []
+            # Save packet count to the database
+            await self.save_packet_count(packet_count)
+
+
+
+
+class PacketConsumer(AsyncWebsocketConsumer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.packets = []
+        
+    async def connect(self):
+        await self.accept()
+
+        def update_packets(packet):
+            self.packets.append(packet)
+            asyncio.run(self.handle_packet(packet))
+
+        # def update_packets(packet):
+        #     self.packets.append(packet)
+        #     filter_value = self.scope.get('filter_value', None)
+        #     if filter_value and packet.haslayer("IP"):
+        #         ip_src = packet["IP"].src
+        #         if ip_src == filter_value:
+        #             asyncio.run(self.handle_packet(packet))
+        #     elif (filter_value is None or filter_value=='') and packet.haslayer("IP"):
+        #         asyncio.run(self.handle_packet(packet))
                 
         asyncio.create_task(asyncio.to_thread(sniff, prn=update_packets, store=0))
+        asyncio.create_task(self.periodic_task())
 
     async def disconnect(self, close_code):
         pass  
 
-    async def receive(self, text_data):
-        data = json.loads(text_data)
-        self.scope['filter_value'] = data.get('filter', None)
+
+    async def periodic_task(self):
+        while True:
+            await asyncio.sleep(5)  # Wait for 5 seconds
+            print(len(self.packets))
+            # self.packets = [] 
+    # async def receive(self, text_data):
+    #     data = json.loads(text_data)
+    #     self.scope['filter_value'] = data.get('filter', None)
     
+        
     async def handle_packet(self, packet):
-        if packet.haslayer("IP"):
-            ip_src = packet["IP"].src
-            ip_dst = packet["IP"].dst
-            packet_info = f"Incoming Traffic: {ip_src} -> {ip_dst}"
+        if packet.haslayer(IP) and packet.haslayer(TCP):
+            ip_src = packet[IP].src
+            ip_dst = packet[IP].dst
+            src_port = packet[TCP].sport
+            dst_port = packet[TCP].dport
+            src_mac = packet[Ether].src
+            dst_mac = packet[Ether].dst
+            protocol = packet[IP].proto
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            window_size = packet[TCP].window
+
+            packet_info = {
+                'ip_src': ip_src,
+                'ip_dst': ip_dst,
+                'src_port': src_port,
+                'dst_port': dst_port,
+                'src_mac': src_mac,
+                'dst_mac': dst_mac,
+                'protocol': protocol,
+                'timestamp': timestamp,
+                'window_size': window_size
+            }
+
             await self.send(text_data=json.dumps({'packet': packet_info}))
 
 
@@ -120,13 +207,22 @@ class AnomalyPredictionConsumer(AsyncWebsocketConsumer):
         #                  'num_pkts_src', 'num_pkts_dst', 'modbus_function_code', 
         #                  'R1', 'R2', 'C1', 'C2', 'incLoad1', 'decLoad1', 'incLoad2', 'decLoad2',
         #                  'closeLoad1', 'closeLoad2']]
+        
+        src_ip="1.1.1.1"
+        dst_ip="2.2.2.2"
+        # protocol=""
+        holdings=[12,1000,3000,4000,5000]
         features = [
+            src_ip,
+            dst_ip,
+            src_port,
+            dst_port,
             payload_size,
             protocol,
             num_pkts_src,
             num_pkts_dst,
             modbus_function_code,
-
+            holdings[0],
             holdings[1],
             holdings[2],
             holdings[3],
@@ -155,9 +251,10 @@ class AnomalyPredictionConsumer(AsyncWebsocketConsumer):
             'closeLoad1': coils[4],
             'closeLoad2': coils[5]
         }
-        predicted_data = pd.DataFrame(data_dict, index=[0])
+        data = pd.DataFrame(data_dict, index=[0])
+        # print(type(features))
         # print(type(predicted_data[0]))
-        return predicted_data
+        return data, features
 
     def make_prediction(self, features):
         prediction = self.svm_model.predict(features)
@@ -165,6 +262,34 @@ class AnomalyPredictionConsumer(AsyncWebsocketConsumer):
         prediction_as_int = int(prediction[0]) if prediction[0] != -1 else -1
 
         return prediction_as_int
+
+    @database_sync_to_async
+    def create_network_traffic_entry(self, anomaly_packets, normal_packets):
+        NetworkTraffic.objects.create(anomaly_packets=anomaly_packets, normal_packets=normal_packets)
+
+    @database_sync_to_async
+    def create_anomaly_entry(self, data):
+        AnomalyPackets.objects.create( 
+            src_ip = data[0],
+            dst_ip = data[1],
+            src_port = data[2],
+            dst_port = data[3],
+            payload_size = data[4],
+            protocol =data[5],
+            num_pkts_src = data[6],
+            num_pkts_dst = data[7],
+            modbus_function_code = data[8],
+            R1 = data[10],
+            R2 = data[11],
+            C1 = data[12],
+            C2 = data[13],
+            incLoad1 = data[14],
+            decLoad1 = data[15],
+            incLoad2 = data[16],
+            decLoad2 = data[17],
+            closeLoad1 = data[18],
+            closeLoad2 = data[19]
+        )
 
     async def periodic_task(self):
         while True:
@@ -177,18 +302,25 @@ class AnomalyPredictionConsumer(AsyncWebsocketConsumer):
                     print('3')
                     random_packet = random.choice(eligible_packets)
                     packet = random_packet
-                    if str(packet[IP].src) == "10.7.225.41" or str(packet[IP].dst) == "10.7.225.41":
+                    if str(packet[IP].src) == "10.7.52.222" or str(packet[IP].dst) == "10.7.52.222":
                         print('4')
                         if packet.haslayer(IP) and packet.haslayer(TCP):
                             print('5')
-                            features = self.extract_features(packet)
+                            features, data= self.extract_features(packet)
                             scaler = joblib.load('C:\\Users\\Maaz Ahmed\\SCADAFYP\\scalar.joblib')
                             features = scaler.transform(features)
+                            
                             prediction = self.make_prediction(features)
                             print(f'Number of packets: {len(self.packets)}')
-                            await self.send(text_data=json.dumps({'prediction': prediction}))
-                            self.packets = []  # Reset packets for the next round
 
+                            if prediction == -1:
+                                await self.send(text_data=json.dumps({'prediction': prediction, 'data': data}))
+                                await self.create_network_traffic_entry(anomaly_packets=100, normal_packets=len(self.packets))
+                                await self.create_anomaly_entry(data)
+                            else:
+                                await self.create_network_traffic_entry(anomaly_packets=0, normal_packets=len(self.packets))
+
+                            self.packets = [] 
 
 
 
@@ -228,8 +360,8 @@ class SecurityPredictionConsumer(AsyncWebsocketConsumer):
         # # if src_ip == "10.7.53.198" or dst_ip_
         # src_mac = packet.src
         # dst_mac = packet.dst
-        # src_port = packet[TCP].sport
-        # dst_port = packet[TCP].dport
+        src_port = packet[TCP].sport
+        dst_port = packet[TCP].dport
         # tcp_flags = packet[TCP].flags
         payload_size = len(packet[TCP].payload) 
         protocol = packet[IP].proto
@@ -263,6 +395,10 @@ class SecurityPredictionConsumer(AsyncWebsocketConsumer):
             modbus_function_code = int.from_bytes(modbus_payload[7:8], byteorder='big')
 
         features = [
+            src_ip,
+            dst_ip,
+            src_port,
+            dst_port,
             payload_size,
             window_size,
             num_pkts_src,
@@ -281,7 +417,7 @@ class SecurityPredictionConsumer(AsyncWebsocketConsumer):
         }
         predicted_data = pd.DataFrame(data_dict, index=[0])
         # print(type(predicted_data[0]))
-        return predicted_data
+        return predicted_data, features
 
     def make_prediction(self, features):
         prediction = self.rf_classifier.predict(features)
@@ -289,6 +425,25 @@ class SecurityPredictionConsumer(AsyncWebsocketConsumer):
         prediction_as_int = int(prediction[0]) #if prediction[0] != -1 else -1
 
         return prediction_as_int
+
+    @database_sync_to_async
+    def create_security_traffic_entry(self, security_packets, normal_packets):
+        SecurityTraffic.objects.create(security_packets=security_packets, normal_packets=normal_packets)
+
+    @database_sync_to_async
+    def create_security_entry(self, data):
+        SecurityPackets.objects.create( 
+            src_ip = data[0],
+            dst_ip = data[1],
+            src_port = data[2],
+            dst_port = data[3],
+            payload_size = data[4],
+            window_size =data[5],
+            num_pkts_src = data[6],
+            num_pkts_dst = data[7],
+            modbus_function_code = data[8],
+            ttl_value = data[9],
+            )
 
     async def periodic_task(self):
         while True:
@@ -301,16 +456,23 @@ class SecurityPredictionConsumer(AsyncWebsocketConsumer):
                     print('3')
                     random_packet = random.choice(eligible_packets)
                     packet = random_packet
-                    if str(packet[IP].src) == "10.7.225.41" or str(packet[IP].dst) == "10.7.225.41":
+                    if str(packet[IP].src) == "10.7.52.222" or str(packet[IP].dst) == "10.7.52.222":
                         print('4')
                         if packet.haslayer(IP) and packet.haslayer(TCP):
                             print('5')
-                            features = self.extract_features(packet)
+                            features, data = self.extract_features(packet)
                             scaler = joblib.load('C:\\Users\\Maaz Ahmed\\SCADAFYP\\scalarrf.joblib')
                             features = scaler.transform(features)
                             prediction = self.make_prediction(features)
                             print(f'Number of packets: {len(self.packets)}')
-                            await self.send(text_data=json.dumps({'prediction': prediction}))
+                            if prediction == 1:
+                                await self.send(text_data=json.dumps({'prediction': prediction, 'data': data}))
+                                await self.create_security_traffic_entry(security_packets=100, normal_packets=len(self.packets))
+                                await self.create_security_entry(data)
+                            else:
+                                await self.create_security_traffic_entry(security_packets=0, normal_packets=len(self.packets))
+
+                            # await self.send(text_data=json.dumps({'prediction': prediction}))
                             self.packets = []  # Reset packets for the next round
 
 
