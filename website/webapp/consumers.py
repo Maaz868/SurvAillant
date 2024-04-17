@@ -208,8 +208,8 @@ class AnomalyPredictionConsumer(AsyncWebsocketConsumer):
         #                  'R1', 'R2', 'C1', 'C2', 'incLoad1', 'decLoad1', 'incLoad2', 'decLoad2',
         #                  'closeLoad1', 'closeLoad2']]
         
-        src_ip="1.1.1.1"
-        dst_ip="2.2.2.2"
+        # src_ip="1.1.1.1"
+        # dst_ip="2.2.2.2"
         # protocol=""
         holdings=[12,1000,3000,4000,5000]
         features = [
@@ -293,7 +293,7 @@ class AnomalyPredictionConsumer(AsyncWebsocketConsumer):
 
     async def periodic_task(self):
         while True:
-            await asyncio.sleep(5)  # Wait for 5 seconds
+            
             print(f'Number of packets num1: {len(self.packets)}')
             if self.packets:
                 print('2')
@@ -302,7 +302,7 @@ class AnomalyPredictionConsumer(AsyncWebsocketConsumer):
                     print('3')
                     random_packet = random.choice(eligible_packets)
                     packet = random_packet
-                    if str(packet[IP].src) == "10.7.52.222" or str(packet[IP].dst) == "10.7.52.222":
+                    if str(packet[IP].src) == "10.7.224.212" or str(packet[IP].dst) == "10.7.224.212":
                         print('4')
                         if packet.haslayer(IP) and packet.haslayer(TCP):
                             print('5')
@@ -321,7 +321,7 @@ class AnomalyPredictionConsumer(AsyncWebsocketConsumer):
                                 await self.create_network_traffic_entry(anomaly_packets=0, normal_packets=len(self.packets))
 
                             self.packets = [] 
-
+            await asyncio.sleep(5)  # Wait for 5 seconds
 
 
 
@@ -447,7 +447,6 @@ class SecurityPredictionConsumer(AsyncWebsocketConsumer):
 
     async def periodic_task(self):
         while True:
-            await asyncio.sleep(5)  # Wait for 5 seconds
             print(f'Number of packets num1: {len(self.packets)}')
             if self.packets:
                 print('2')
@@ -456,7 +455,7 @@ class SecurityPredictionConsumer(AsyncWebsocketConsumer):
                     print('3')
                     random_packet = random.choice(eligible_packets)
                     packet = random_packet
-                    if str(packet[IP].src) == "10.7.52.222" or str(packet[IP].dst) == "10.7.52.222":
+                    if str(packet[IP].src) == "10.7.224.212" or str(packet[IP].dst) == "10.7.224.212":
                         print('4')
                         if packet.haslayer(IP) and packet.haslayer(TCP):
                             print('5')
@@ -474,7 +473,7 @@ class SecurityPredictionConsumer(AsyncWebsocketConsumer):
 
                             # await self.send(text_data=json.dumps({'prediction': prediction}))
                             self.packets = []  # Reset packets for the next round
-
+            await asyncio.sleep(5)  # Wait for 5 seconds    
 
 
 

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="DashStyle.css">
+    <title>Admin panel</title>
+</head>
+
+<body>
+        <div class="topbar">
+            <div class="logo">
+                <img src="assets/Survaillant4.png " class="image" alt="">
+            </div>
+            <div class="search">
+                <input type="text" name="search" placeholder="search here" style="display:none">
+                <label for="search"><i class="fas fa-search" style="display:none"></i></label>
+            </div>
+            <i class="bi bi-bell"></i>
+            <div class="user">
+                <img src="assets/profile-img.png" alt="">
+            </div>
+        </div>
+        <div class="sidebar">
+            <ul>
+                <li>
+                    <a href="#">
+                        <i class="bi bi-grid"></i>
+                        <div>Dashboard</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="bi bi-activity"></i>
+                        <div>Network Activity</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="bi bi-exclamation-octagon"></i>
+                        <div>Alerts</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="toggleReport()">
+                        <i class="bi bi-chevron-down ms-auto"></i>
+                        <div>Report</div>
+                    </a>
+                    <ul id="report-dropdown" class="nav-content collapse" >
+                        <li>
+                            <a href="components-alerts.html">
+                                <i class="bi bi-bar-chart-line"></i> <span>Anomalies</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="components-accordion.html">
+                                <i class="bi bi-shield-exclamation"></i><span>Security Threats</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                
+                
+                
+            </ul>
+        </div>
+        <div class="main">
+            <div class="cards">
+                <div class="card1">
+                    <div class="card-content">
+                        <div class="number">1217</div>
+                        <div class="card-name">Tiggered Alerts</div>
+                    </div>
+                    <div class="icon-box">
+                        <!--<i class="fa fa-exclamation-circle fa-5x"></i>-->
+                        <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+                <div class="card2">
+                    <div class="card-content">
+                        <div class="number">42</div>
+                        <div class="card-name">Notifications</div>
+                    </div>
+                    <div class="icon-box">
+                        <i class="fa fa-comments fa-5x" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <div class="card3">
+                    <div class="card-content">
+                        <div class="number">68</div>
+                        <div class="card-name">Critical</div>
+                    </div>
+                    <div class="icon-box">
+                        <i class="fa fa-exclamation-triangle fa-5x" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <div class="card4">
+                    <div class="card-content">
+                        <div class="number">45</div>
+                        <div class="card-name">Warnings</div>
+                    </div>
+                    <div class="icon-box">
+                        <i class="fa fa-bell fa-5x" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="charts">
+                <div class="chart">
+                    <h2>Network Activity (past XYZ months)</h2>
+                    <div>
+                        <canvas id="lineChart"></canvas>
+                    </div>
+                </div>   
+                <div class="chart doughnut-chart">
+                    <h2>Classification</h2>
+                    <div>
+                        <canvas id="doughnut"></canvas>
+                    </div>
+                </div>
+                <div class="chart bar-chart">
+                    <h2>Bar Chart</h2>
+                    <div>
+                        <canvas id="barchart"></canvas>
+                    </div>
+                </div>
+                <div class="chart doughnut-chart">
+                    <h2>Pie Chart</h2>
+                    <div>
+                        <canvas id="doughnuts"></canvas>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
+    <script src="chart1.js"></script>
+    <script src="chart5.js"></script>
+    <script src="piechart.js"></script>
+    <script src="barchart.js"></script>
+    <script>
+        function toggleReport() {
+            var reportDropdown = document.getElementById("report-dropdown");
+            if (reportDropdown.style.display === "none" || reportDropdown.style.display === "") {
+                reportDropdown.style.display = "block";
+            } else {
+                reportDropdown.style.display = "none";
+            }
+        }
+    </script>
+</body>
+
+</html>

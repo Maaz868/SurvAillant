@@ -66,67 +66,14 @@
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
             <li class="dropdown-header">
-              You have 4 new notifications
+              You have 4 new alerts
               <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
             </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+           
 
-            <li class="notification-item">
-              <i class="bi bi-exclamation-circle text-warning"></i>
-              <div>
-                <h4>Lorem Ipsum</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>30 min. ago</p>
-              </div>
-            </li>
+           
 
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-x-circle text-danger"></i>
-              <div>
-                <h4>Atque rerum nesciunt</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>1 hr. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-check-circle text-success"></i>
-              <div>
-                <h4>Sit rerum fuga</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>2 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-info-circle text-primary"></i>
-              <div>
-                <h4>Dicta reprehenderit</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>4 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li class="dropdown-footer">
-              <a href="#">Show all notifications</a>
-            </li>
+           
 
           </ul><!-- End Notification Dropdown Items -->
 
@@ -154,7 +101,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+              <a class="dropdown-item d-flex align-items-center" href="admin-panel">
                 <i class="bi bi-gear"></i>
                 <span>User Settings</span>
               </a>
@@ -169,7 +116,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
+              <a class="dropdown-item d-flex align-items-center" href="signout">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
@@ -189,20 +136,20 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="dashboard.html">
+        <a class="nav-link collapsed" href="dashboard">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
       </li><!-- End Dashboard Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="network_activity.html">
+        <a class="nav-link collapsed" href="sniff">
           <i class="bi bi-activity"></i>
           <span>Network Activity</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="dashboard.html">
+        <a class="nav-link collapsed" href="alerts">
           <i class="bi bi-exclamation-octagon"></i>
           <span>Alerts</span>
         </a>
@@ -214,12 +161,12 @@
         </a>
         <ul id="components-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
           <li>
-            <a href="components-alerts.html">
+            <a href="anomalyreports">
              <i class="bi bi-bar-chart-line"></i> <span>Anomalies</span>
             </a>
           </li>
           <li>
-            <a href="components-accordion.html">
+            <a href="securityreports">
               <i class="bi bi-shield-exclamation"></i><span>Security Threats</span>
             </a>
           </li>
@@ -270,7 +217,7 @@
 
     socket2.onmessage = function (event) {
         var predictionInfo = JSON.parse(event.data);
-        createAlert(predictionInfo, 'Security');
+        createAlert(predictionInfo, 'Security Threat');
   
     };
 
@@ -289,13 +236,13 @@
       var dataInfo = info.data;
       console.log(dataInfo);
       alertDiv.innerHTML = `
-        <h4 class="alert-heading">${heading} Detected !!!</h4>
-        <p>Source IP: ${dataInfo[0]}</p>
-        <p>Destination IP: ${dataInfo[1]}</p>
-        <hr>
-        <p class="mb-0">Anomaly Detected from ${dataInfo[0]} to ${dataInfo[1]}.</p>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    `;
+            <h4 class="alert-heading clickable-heading">${heading} Detected !!!</h4>
+            <p>Source IP: ${dataInfo[0]}</p>
+            <p>Destination IP: ${dataInfo[1]}</p>
+            <hr>
+            <p class="mb-0">Anomaly Detected from ${dataInfo[0]} to ${dataInfo[1]}.</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
 
       // Append the alert to the container
       var alertContainer = document.querySelector('.card-body');
@@ -303,6 +250,14 @@
 
       // Show the 'No more Alerts' message if no alerts are present
       updateAlertsMessage();
+      var clickableHeading = alertDiv.querySelector('.clickable-heading');
+        clickableHeading.addEventListener('click', function () {
+            if (heading.toLowerCase() === 'anomaly') {
+                window.location.href = "{% url 'anomalyreports' %}"; // Redirect to anomalyreports
+            } else if (heading.toLowerCase() === 'security threat') {
+                window.location.href = "{% url 'securityreports' %}"; // Redirect to securityreports
+            }
+        });
     }
 
     // Function to check if there are no alerts and show the message accordingly

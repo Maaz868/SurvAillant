@@ -15,6 +15,11 @@ def home(request):
     return render(request, 'webapp/index.html')
 
 def signup(request):
+    try:
+        logout(request)
+    except:
+        pass
+
     if request.method == "POST":
         username = request.POST['username']
         email = request.POST['email']
@@ -35,6 +40,11 @@ def signup(request):
 
 
 def signin(request):
+    try:
+        logout(request)
+    except:
+        pass
+    
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
@@ -62,13 +72,15 @@ def trial(request):
 def signout(request):
     logout(request)
     messages.success(request,"You've logged out")
-    return redirect('home')
+    return render(request, 'landingpage.html')
 
+@login_required(login_url='signin')
 def sniff_packets(request):
     return render(request, 'network2.html')
     # template = loader.get_template('packet_monitor.html')
     # return HttpResponse(template.render())
 
+@login_required(login_url='signin')
 def predictions(request):
     return render(request, 'predictions.html')
 
@@ -99,14 +111,20 @@ def approve_user(request, user_id):
 
     return redirect('admin_panel')
 
+@login_required(login_url='signin')
 def alerts(request):
     return render(request, 'alerts.html')    
 
 
 def landingpage(request):
+    try:
+        logout(request)
+    except:
+        pass
+    
     return render(request, 'landingpage.html')    
 
-
+@login_required(login_url='signin')
 def dashboard(request):
     
     all_entries = NetworkTraffic.objects.all()
@@ -142,15 +160,16 @@ def dashboard(request):
                 'total_security_count': total_security_count,
                 'total_normal_count1': total_normal_count2,
                 }
-    return render(request, 'dash1.html', context)
+    return render(request, 'dash.html', context)
 
 
-
+@login_required(login_url='signin')
 def anomalyreports(request):
     anomalies = AnomalyPackets.objects.all()  # Query all anomalies (adjust the query based on your model structure)
     context = {'anomalies': anomalies}
     return render(request, 'anomalies.html', context)
 
+@login_required(login_url='signin')
 def securityreports(request):
     security = SecurityPackets.objects.all()  # Query all anomalies (adjust the query based on your model structure)
     context = {'security': security}

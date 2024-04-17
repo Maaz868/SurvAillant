@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="DashStyles.css">
+    <link rel="stylesheet" href="../Header/assets/css/style.css">
+    <title>Admin panel</title>
+</head>
+
+<body>
+    <!-- Include the common header in a <header> element -->
+        <!--<iframe src="../Header/components-modal.html" frameborder="0"></iframe>-->
+    <!--<div class="container">
+        <div class="topbar">
+            <div class="logo">
+                <h2>Brand.</h2>
+            </div>
+            <div class="search">
+                <input type="text" name="search" placeholder="search here">
+                <label for="search"><i class="fas fa-search"></i></label>
+            </div>
+            <i class="fas fa-bell"></i>
+            <div class="user">
+                <img src="img/user.png" alt="">
+            </div>
+        </div>
+        <div class="sidebar">
+            <ul>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-th-large"></i>
+                        <div>Dashboard</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-user-graduate"></i>
+                        <div>Students</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <div>Teachers</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-users"></i>
+                        <div>Employees</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-chart-bar"></i>
+                        <div>Analytics</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-hand-holding-usd"></i>
+                        <div>Earnings</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-cog"></i>
+                        <div>Settings</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-question"></i>
+                        <div>Help</div>
+                    </a>
+                </li>
+            </ul>
+        </div>-->
+        <div class="main">
+            <div class="cards">
+                <div class="card1">
+                    <div class="card-content">
+                        <div class="number">1217</div>
+                        <div class="card-name">Tiggered Alerts</div>
+                    </div>
+                    <div class="icon-box">
+                        <!--<i class="fa fa-exclamation-circle fa-5x"></i>-->
+                        <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+                <div class="card2">
+                    <div class="card-content">
+                        <div class="number">42</div>
+                        <div class="card-name">Notifications</div>
+                    </div>
+                    <div class="icon-box">
+                        <i class="fa fa-comments fa-5x" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <div class="card3">
+                    <div class="card-content">
+                        <div class="number">68</div>
+                        <div class="card-name">Critical</div>
+                    </div>
+                    <div class="icon-box">
+                        <i class="fa fa-exclamation-triangle fa-5x" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <div class="card4">
+                    <div class="card-content">
+                        <div class="number">45</div>
+                        <div class="card-name">Warnings</div>
+                    </div>
+                    <div class="icon-box">
+                        <i class="fa fa-bell fa-5x" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="charts">
+                <div class="chart">
+                    <h2>Network Activity (past XYZ months)</h2>
+                    <div>
+                        <canvas id="lineChart"></canvas>
+                    </div>
+                </div>   
+                <div class="chart doughnut-chart">
+                    <h2>Classification</h2>
+                    <div>
+                        <canvas id="doughnut"></canvas>
+                    </div>
+                </div>
+                <div class="chart bar-chart">
+                    <h2>Bar Chart</h2>
+                    <div>
+                        <canvas id="barchart"></canvas>
+                    </div>
+                </div>
+                <div class="chart doughnut-chart">
+                    <h2>Pie Chart</h2>
+                    <div>
+                        <canvas id="doughnuts"></canvas>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <!--<script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
+    <script src="chart1.js"></script>
+    <script src="chart5.js"></script>
+    <script src="../Header/assets/js/main.js"></script>
+
+    <!-- Include the new charts scripts -->
+    <script src="piechart.js"></script>
+    <script src="barchart.js"></script>
+
+</body>
+
+</html>

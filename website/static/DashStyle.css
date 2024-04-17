@@ -11,13 +11,25 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.08);
     width: 100%;
     padding: 0 20px;
-    height: 60px;
+    height: 70px;
     display: grid;
     grid-template-columns: 2fr 10fr 0.4fr 1fr;
     align-items: center;
     z-index: 1;
 }
-
+.topbar .toggle-sidebar-btn {
+    font-size: 32px;
+    padding-left: 10px;
+    cursor: pointer;
+    color: #012970;
+  }
+.image{
+    height:50px;
+    margin-left: 0;
+    display: flex;
+    align-items: center;
+    max-width:250px;
+   }
 img {
     position: absolute;
     top: 0;
@@ -26,7 +38,15 @@ img {
     height: 100%;
     object-fit: cover;
 }
+.user img{
+    border-radius: 50%;
+}
 
+.logo{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 .logo h2 {
     color: #299B63;
 }
@@ -66,22 +86,32 @@ img {
     height: 50px;
     justify-self: right;
 }
+.right-icons {
+    display: flex; /* Align bell icon and user image horizontally */
+}
 
+.right-icons > * {
+    margin-left: 10px; /* Add space between bell icon and user image */
+}
 
 /* sidebar */
 
 .sidebar {
     position: fixed;
-    top: 60px;
-    width: 260px;
-    height: calc(100% - 60px);
+    top: 70px;
+    width: 250px;
+    height: calc(100% - 70px);
     background: #36476B;
     overflow-x: hidden;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    scrollbar-width: thin;
     z-index: 2;
+    font-family: "Raleway", sans-serif;
+    font-size: 15px;
 }
 
 .sidebar ul {
+    
     margin-top: 20px;
 }
 
@@ -113,7 +143,22 @@ img {
     text-align: center;
 }
 
+@media (max-width: 1199px) {
+    .toggle-sidebar .sidebar {
+      left: 0;
+    }
+  }
+  @media (min-width: 1200px) {
 
+    .toggle-sidebar #main,
+    .toggle-sidebar #footer {
+      margin-left: 0;
+    }
+  
+    .toggle-sidebar .sidebar {
+      left: -300px;
+    }
+  }
 /* main */
 
 .main {
@@ -173,10 +218,22 @@ img {
     box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
 }
 
+    .nav-content li {
+        padding-left: 20px; /* Adjust the value as needed */
+    }
+
 .number {
     font-size: 35px;
     font-weight: 500;
     color: #fff;
+}
+.dropdown,
+.dropdown-center,
+.dropend,
+.dropstart,
+.dropup,
+.dropup-center {
+    position: relative
 }
 
 .card-name {
@@ -280,4 +337,39 @@ img {
         width: 40px;
         height: 40px;
     }
+}
+.nav {
+    --bs-nav-link-padding-x: 1rem;
+    --bs-nav-link-padding-y: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none
+}
+.nav-link {
+    display: block;
+    text-decoration: none;
+    background: 0 0;
+    border: 0;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
+}
+.nav-profile {
+    color: #012970;
+  }
+  
+ .nav-profile img {
+    max-height: 36px;
+  }
+  
+   .nav-profile span {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .rounded-circle {
+    border-radius: 50% !important
+}
+.profile-span{
+    display:none;
+    display: block;
 }

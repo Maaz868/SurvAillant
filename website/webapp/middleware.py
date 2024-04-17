@@ -9,13 +9,13 @@ class AdminMiddleware:
         user = request.user
         path = request.path
         # print(user)
-        print(path)
+        # print(path)
 
         admin_paths=['/admin-panel']
 
         if path in admin_paths and (not user.is_authenticated or not user.is_admin):
             # return render(request, 'wait_for_approval.html')
-            return redirect('home')
+            return redirect('')
         return self.get_response(request)
     
 
@@ -28,7 +28,7 @@ class WaitingMiddleware:
         path = request.path
         # print(user)
 
-        paths=['/sniff','/predictions','/trial']
+        paths=['/sniff','/predictions','/trial','/alerts','/anomalyreports','/dashboard','/securityreports']
 
         if user.is_authenticated and not user.is_user_approved and path in paths:
             return render(request, 'wait_for_approval.html')  # Create this template
