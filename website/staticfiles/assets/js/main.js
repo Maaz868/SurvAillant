@@ -1,9 +1,5 @@
 /**
-* Template Name: NiceAdmin
-* Updated: Jan 29 2024 with Bootstrap v5.3.2
-* Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
+
 */
 (function() {
   "use strict";
@@ -323,101 +319,6 @@
   /**
    * Autoresize echart charts
    */
-
-  function sortTable(order) {
-    var table, rows, switching, i, x, y, shouldSwitch;
-    table = document.getElementById("myTable");
-    switching = true;
-    while (switching) {
-      switching = false;
-      rows = table.rows;
-      for (i = 1; i < (rows.length - 1); i++) {
-        shouldSwitch = false;
-        x = rows[i].getElementsByTagName("TD")[0];
-        y = rows[i + 1].getElementsByTagName("TD")[0];
-        if (order === "asc") {
-          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-            shouldSwitch = true;
-            break;
-          }
-        } else if (order === "desc") {
-          if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-            shouldSwitch = true;
-            break;
-          }
-        }
-      }
-      if (shouldSwitch) {
-        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-        switching = true;
-      }
-    }
-  }
-  
-  
-$(document).ready(function(){
-  $('#myTable').DataTable();
-})
- 	
-function createAlert(message) {
-  var alertDiv = document.createElement('div');
-  alertDiv.className = 'alert alert-dismissible fade show';
-  alertDiv.role = 'alert';
-  alertDiv.innerHTML = `
-      <h4 class="alert-heading">${message}</h4>
-      <p>Et suscipit deserunt earum itaque dignissimos recusandae dolorem qui. Molestiae rerum perferendis laborum. Occaecati illo at laboriosam rem molestiae sint.</p>
-      <hr>
-      <p class="mb-0">Temporibus quis et qui aspernatur laboriosam sit eveniet qui sunt.</p>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  `;
-
-  // Append the alert to the container
-  document.getElementById('alertContainer').appendChild(alertDiv);
-
-  // Show the 'No new Alerts' message if no alerts are present
-  checkNoAlerts();
-}
-
-// Function to check if there are no alerts and show the message accordingly
-function checkNoAlerts() {
-  var alerts = document.getElementsByClassName('alert');
-  var noAlertsMessage = document.getElementById('noAlertsMessage');
-
-  // If no alerts are present, display the message; otherwise, hide it
-  if (alerts.length === 0) {
-      noAlertsMessage.style.display = 'block';
-  } else {
-      noAlertsMessage.style.display = 'none';
-  }
-}
-
-// Call the checkNoAlerts function initially to check if there are alerts on page load
-checkNoAlerts();
-
-// Example: Create some alerts
-createAlert('Primary Heading');
-createAlert('Secondary Heading');
-createAlert('Success Heading');
-createAlert('Danger Heading');
-createAlert('Warning Heading');
-createAlert('Info Heading');
-createAlert('Lignt Heading');
-createAlert('Dark Heading');
-
-// Add event listener to dynamically created close buttons to check for dismissed alerts
-document.getElementById('alertContainer').addEventListener('click', function(event) {
-  if (event.target.classList.contains('btn-close')) {
-      // Remove the parent alert when close button is clicked
-      event.target.parentNode.remove();
-      // Check if there are any remaining alerts
-      checkNoAlerts();
-  }
-});
-new DataTable('#example', {
-  info: false,
-  ordering: true,
-  paging: true,
-});
   const mainContainer = select('#main');
   if (mainContainer) {
     setTimeout(() => {

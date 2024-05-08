@@ -1,10 +1,3 @@
-/**
-* Template Name: NiceAdmin
-* Updated: Jan 29 2024 with Bootstrap v5.3.2
-* Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
 
 /*--------------------------------------------------------------
 # General
@@ -67,39 +60,8 @@ h6 {
   color: #012970;
 }
 
-/*--------------------------------------------------------------
-# Back to top button
---------------------------------------------------------------*/
-.back-to-top {
-  position: fixed;
-  visibility: hidden;
-  opacity: 0;
-  right: 15px;
-  bottom: 15px;
-  z-index: 99999;
-  background: #4154f1;
-  width: 40px;
-  height: 40px;
-  border-radius: 4px;
-  transition: all 0.4s;
-}
 
-.back-to-top i {
-  font-size: 24px;
-  color: #fff;
-  line-height: 0;
-}
-
-.back-to-top:hover {
-  background: #6776f4;
-  color: #fff;
-}
-
-.back-to-top.active {
-  visibility: visible;
-  opacity: 1;
-}
-
+ 
 /*--------------------------------------------------------------
 # Override some default Bootstrap stylings
 --------------------------------------------------------------*/
@@ -304,31 +266,7 @@ h6 {
   font-size: 15px;
 }
 
-/* Breadcrumbs */
-.breadcrumb {
-  font-size: 14px;
-  font-family: "Nunito", sans-serif;
-  color: #899bbd;
-  font-weight: 600;
-}
 
-.breadcrumb a {
-  color: #899bbd;
-  transition: 0.3s;
-}
-
-.breadcrumb a:hover {
-  color: #51678f;
-}
-
-.breadcrumb .breadcrumb-item::before {
-  color: #899bbd;
-}
-
-.breadcrumb .active {
-  color: #51678f;
-  font-weight: 600;
-}
 
 /* Bordered Tabs */
 .nav-tabs-bordered {
@@ -358,7 +296,7 @@ h6 {
 .image{
   height:70px;
  
-  padding-left:30px;
+  padding-left:0px;
 }
 
 .logo {
@@ -603,6 +541,7 @@ h6 {
 .image{
   height:50px;
  margin-left: 0;
+ max-width:250px;
 }
 /*--------------------------------------------------------------
 # Sidebar
@@ -816,165 +755,11 @@ h6 {
   padding: 8px 15px;
 }
 
-/* Info Cards */
-.dashboard .info-card {
-  padding-bottom: 10px;
-}
+;
 
-.dashboard .info-card h6 {
-  font-size: 28px;
-  color: #012970;
-  font-weight: 700;
-  margin: 0;
-  padding: 0;
-}
 
-.dashboard .card-icon {
-  font-size: 32px;
-  line-height: 0;
-  width: 64px;
-  height: 64px;
-  flex-shrink: 0;
-  flex-grow: 0;
-}
 
-.dashboard .sales-card .card-icon {
-  color: #4154f1;
-  background: #f6f6fe;
-}
 
-.dashboard .revenue-card .card-icon {
-  color: #2eca6a;
-  background: #e0f8e9;
-}
-
-.dashboard .customers-card .card-icon {
-  color: #ff771d;
-  background: #ffecdf;
-}
-
-/* Activity */
-.dashboard .activity {
-  font-size: 14px;
-}
-
-.dashboard .activity .activity-item .activite-label {
-  color: #888;
-  position: relative;
-  flex-shrink: 0;
-  flex-grow: 0;
-  min-width: 64px;
-}
-
-.dashboard .activity .activity-item .activite-label::before {
-  content: "";
-  position: absolute;
-  right: -11px;
-  width: 4px;
-  top: 0;
-  bottom: 0;
-  background-color: #eceefe;
-}
-
-.dashboard .activity .activity-item .activity-badge {
-  margin-top: 3px;
-  z-index: 1;
-  font-size: 11px;
-  line-height: 0;
-  border-radius: 50%;
-  flex-shrink: 0;
-  border: 3px solid #fff;
-  flex-grow: 0;
-}
-
-.dashboard .activity .activity-item .activity-content {
-  padding-left: 10px;
-  padding-bottom: 20px;
-}
-
-.dashboard .activity .activity-item:first-child .activite-label::before {
-  top: 5px;
-}
-
-.dashboard .activity .activity-item:last-child .activity-content {
-  padding-bottom: 0;
-}
-
-/* News & Updates */
-.dashboard .news .post-item+.post-item {
-  margin-top: 15px;
-}
-
-.dashboard .news img {
-  width: 80px;
-  float: left;
-  border-radius: 5px;
-}
-
-.dashboard .news h4 {
-  font-size: 15px;
-  margin-left: 95px;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.dashboard .news h4 a {
-  color: #012970;
-  transition: 0.3s;
-}
-
-.dashboard .news h4 a:hover {
-  color: #4154f1;
-}
-
-.dashboard .news p {
-  font-size: 14px;
-  color: #777777;
-  margin-left: 95px;
-}
-
-/* Recent Sales */
-.dashboard .recent-sales {
-  font-size: 14px;
-}
-
-.dashboard .recent-sales .table thead {
-  background: #f6f6fe;
-}
-
-.dashboard .recent-sales .table thead th {
-  border: 0;
-}
-
-.dashboard .recent-sales .dataTable-top {
-  padding: 0 0 10px 0;
-}
-
-.dashboard .recent-sales .dataTable-bottom {
-  padding: 10px 0 0 0;
-}
-
-/* Top Selling */
-.dashboard .top-selling {
-  font-size: 14px;
-}
-
-.dashboard .top-selling .table thead {
-  background: #f6f6fe;
-}
-
-.dashboard .top-selling .table thead th {
-  border: 0;
-}
-
-.dashboard .top-selling .table tbody td {
-  vertical-align: middle;
-}
-
-.dashboard .top-selling img {
-  border-radius: 5px;
-  max-width: 60px;
-}
 
 /*--------------------------------------------------------------
 # Icons list page
@@ -1015,9 +800,7 @@ h6 {
 /*--------------------------------------------------------------
 # Profie Page
 --------------------------------------------------------------*/
-.profile .profile-card img {
-  max-width: 120px;
-}
+
 
 .profile .profile-card h2 {
   font-size: 24px;
@@ -1030,18 +813,6 @@ h6 {
   font-size: 18px;
 }
 
-.profile .profile-card .social-links a {
-  font-size: 20px;
-  display: inline-block;
-  color: rgba(1, 41, 112, 0.5);
-  line-height: 0;
-  margin-right: 10px;
-  transition: 0.3s;
-}
-
-.profile .profile-card .social-links a:hover {
-  color: #012970;
-}
 
 .profile .profile-overview .row {
   margin-bottom: 20px;
@@ -1062,123 +833,8 @@ h6 {
   color: rgba(1, 41, 112, 0.6);
 }
 
-.profile .profile-edit img {
-  max-width: 120px;
-}
 
-/*--------------------------------------------------------------
-# F.A.Q Page
---------------------------------------------------------------*/
-.faq .basic h6 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #4154f1;
-}
 
-.faq .basic p {
-  color: #6980aa;
-}
-
-/*--------------------------------------------------------------
-# Contact
---------------------------------------------------------------*/
-.contact .info-box {
-  padding: 28px 30px;
-}
-
-.contact .info-box i {
-  font-size: 38px;
-  line-height: 0;
-  color: #4154f1;
-}
-
-.contact .info-box h3 {
-  font-size: 20px;
-  color: #012970;
-  font-weight: 700;
-  margin: 20px 0 10px 0;
-}
-
-.contact .info-box p {
-  padding: 0;
-  line-height: 24px;
-  font-size: 14px;
-  margin-bottom: 0;
-}
-
-.contact .php-email-form .error-message {
-  display: none;
-  color: #fff;
-  background: #ed3c0d;
-  text-align: left;
-  padding: 15px;
-  margin-bottom: 24px;
-  font-weight: 600;
-}
-
-.contact .php-email-form .sent-message {
-  display: none;
-  color: #fff;
-  background: #18d26e;
-  text-align: center;
-  padding: 15px;
-  margin-bottom: 24px;
-  font-weight: 600;
-}
-
-.contact .php-email-form .loading {
-  display: none;
-  background: #fff;
-  text-align: center;
-  padding: 15px;
-  margin-bottom: 24px;
-}
-
-.contact .php-email-form .loading:before {
-  content: "";
-  display: inline-block;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  margin: 0 10px -6px 0;
-  border: 3px solid #18d26e;
-  border-top-color: #eee;
-  animation: animate-loading 1s linear infinite;
-}
-
-.contact .php-email-form input,
-.contact .php-email-form textarea {
-  border-radius: 0;
-  box-shadow: none;
-  font-size: 14px;
-  border-radius: 0;
-}
-
-.contact .php-email-form input:focus,
-.contact .php-email-form textarea:focus {
-  border-color: #4154f1;
-}
-
-.contact .php-email-form input {
-  padding: 10px 15px;
-}
-
-.contact .php-email-form textarea {
-  padding: 12px 15px;
-}
-
-.contact .php-email-form button[type=submit] {
-  background: #4154f1;
-  border: 0;
-  padding: 10px 30px;
-  color: #fff;
-  transition: 0.4s;
-  border-radius: 4px;
-}
-
-.contact .php-email-form button[type=submit]:hover {
-  background: #5969f3;
-}
 
 @keyframes animate-loading {
   0% {
@@ -1190,62 +846,3 @@ h6 {
   }
 }
 
-/*--------------------------------------------------------------
-# Error 404
---------------------------------------------------------------*/
-.error-404 {
-  padding: 30px;
-}
-
-.error-404 h1 {
-  font-size: 180px;
-  font-weight: 700;
-  color: #4154f1;
-  margin-bottom: 0;
-  line-height: 150px;
-}
-
-.error-404 h2 {
-  font-size: 24px;
-  font-weight: 700;
-  color: #012970;
-  margin-bottom: 30px;
-}
-
-.error-404 .btn {
-  background: #51678f;
-  color: #fff;
-  padding: 8px 30px;
-}
-
-.error-404 .btn:hover {
-  background: #3e4f6f;
-}
-
-@media (min-width: 992px) {
-  .error-404 img {
-    max-width: 50%;
-  }
-}
-
-/*--------------------------------------------------------------
-# Footer
---------------------------------------------------------------*/
-.footer {
-  padding: 20px 0;
-  font-size: 14px;
-  transition: all 0.3s;
-  border-top: 1px solid #cddfff;
-}
-
-.footer .copyright {
-  text-align: center;
-  color: #012970;
-}
-
-.footer .credits {
-  padding-top: 5px;
-  text-align: center;
-  font-size: 13px;
-  color: #012970;
-}

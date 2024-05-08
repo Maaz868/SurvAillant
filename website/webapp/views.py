@@ -8,11 +8,14 @@ from django.template import loader
 from django.contrib.auth.hashers import make_password, check_password
 from .models import CustomUser, PacketEntry, NetworkTraffic, ProtocolCount, SecurityTraffic, AnomalyPackets, SecurityPackets
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import redirect, render
 from django.http import JsonResponse
 from django.db.models import Sum
 
 def home(request):
-    return render(request, 'webapp/index.html')
+    return render(request, 'Signup-Signin/index.html')
 
 def signup(request):
     try:

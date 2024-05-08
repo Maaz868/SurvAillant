@@ -113,7 +113,7 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': '',  # Set to an empty string
         'HOST': 'localhost',
-        'PORT': '3306',
+        'PORT': '4306',
     }
 }
 

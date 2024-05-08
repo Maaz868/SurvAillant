@@ -296,7 +296,7 @@ h6 {
 .image{
   height:70px;
  
-  padding-left:30px;
+  padding-left:0px;
 }
 
 .logo {
@@ -688,7 +688,7 @@ h6 {
   align-items: center;
   font-size: 14px;
   font-weight: 600;
-  background-color: #36476B;
+  background-color: #6336cb;
   color: white;
   transition: 0.3;
   padding: 10px 0 10px 40px;

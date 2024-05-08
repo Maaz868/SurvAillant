@@ -134,27 +134,27 @@ class PacketConsumer(AsyncWebsocketConsumer):
 class AnomalyPredictionConsumer(AsyncWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.svm_model = joblib.load("C:\\Users\\Maaz Ahmed\\SCADAFYP\\one_class_svm_model.joblib")
+        self.svm_model = joblib.load("C:\\Users\\uswa9\\Downloads\\New folder (3)\\survaillant\\web\\classifier_model.joblib")
         self.packets = []
         self.pkt_timestamps_src = {}
         self.pkt_timestamps_dst = {}
+        self.holdings=[12,28,46,47,57,49,68]
 
     async def connect(self):
         await self.accept()
 
         def update_packets(packet):
-            # asyncio.run(self.handle_packet(packet))
-            # asyncio.run(self.periodic_task(packet))
-            self.packets.append(packet)
+            if packet.haslayer("IP") and packet.haslayer("TCP"):
+                if (str(packet[IP].src) == "10.7.117.8" and str(packet[IP].dst) == "10.7.117.8") or (str(packet[IP].src) == "10.7.228.182" and str(packet[IP].dst) == "10.7.228.37"):
+                    self.packets.append(packet)
 
         asyncio.create_task(asyncio.to_thread(sniff, prn=update_packets, store=0))
-
-        # Periodically process packets and make predictions
         asyncio.create_task(self.periodic_task())
 
     async def disconnect(self, close_code):
         pass  # You can add cleanup code here if needed
 
+    
     
     def extract_features(self, packet):
         src_ip = packet[IP].src
@@ -170,6 +170,8 @@ class AnomalyPredictionConsumer(AsyncWebsocketConsumer):
         protocol = packet[IP].proto
         timestamp = packet.time
         window_size = packet[TCP].window
+        ttl_value = packet[IP].ttl
+    
 
         self.pkt_timestamps_src.setdefault(src_ip, deque())
         self.pkt_timestamps_dst.setdefault(dst_ip, deque())
@@ -188,20 +190,26 @@ class AnomalyPredictionConsumer(AsyncWebsocketConsumer):
         modbus_payload = 0
         modbus_function_code = 0
         voltage = 0
-        R1, R2, C1, C2, incLoad1, decLoad1, incLoad2, decLoad2, closeLoad1, closeLoad2 = [0] * 10
-        coils = [0]*6
-        holdings = [0]*10
+        # R1, R2, C1, C2, incLoad1, decLoad1, incLoad2, decLoad2, closeLoad1, closeLoad2 = [0] * 10
+        coils = [1]*2
+        # holdings = [0]*7
         if packet.haslayer(TCP) and packet.haslayer(Raw):
             modbus_payload = packet[Raw].load  
             protocol = 7
             modbus_function_code = int.from_bytes(modbus_payload[7:8], byteorder='big')
+            if (modbus_function_code == 1 and len(modbus_payload)==10):
+                byte_count = modbus_payload[9]  
+                coils = [(byte_count >> i) & 1 for i in range(0, 2)]
+                # print(coil_values)
+            # else:
+            #     coil_values = [0,0,0,0,0,0]
 
-            if modbus_function_code == 1 and len(modbus_payload) == 10:
-                byte_count = modbus_payload[9]
-                coils = [(byte_count >> i) & 1 for i in range(0, 6)]
-
-            if modbus_function_code == 3 and len(modbus_payload) == 19:
-                holdings = [int.from_bytes(modbus_payload[i:i+2], byteorder='big') for i in range(9, 19, 2)]
+            if (modbus_function_code == 3 and len(modbus_payload)==23):
+                self.holdings = []
+                for i in range(9,23,2):
+                    modbus_value = modbus_payload[i:i+2]
+                    modbus_value_int = int.from_bytes(modbus_value, byteorder='big')
+                    self.holdings.append(modbus_value_int)
 
         # new_features = new_data[['payload_size', 'protocol',
         #                  'num_pkts_src', 'num_pkts_dst', 'modbus_function_code', 
@@ -211,7 +219,7 @@ class AnomalyPredictionConsumer(AsyncWebsocketConsumer):
         # src_ip="1.1.1.1"
         # dst_ip="2.2.2.2"
         # protocol=""
-        holdings=[12,1000,3000,4000,5000]
+        # holdings=[12,28,46,47,57,49,68]
         features = [
             src_ip,
             dst_ip,
@@ -222,34 +230,32 @@ class AnomalyPredictionConsumer(AsyncWebsocketConsumer):
             num_pkts_src,
             num_pkts_dst,
             modbus_function_code,
-            holdings[0],
-            holdings[1],
-            holdings[2],
-            holdings[3],
-            holdings[4],
+            self.holdings[0],
+            self.holdings[1],
+            self.holdings[2],
+            self.holdings[3],
+            self.holdings[4],
+            self.holdings[5],
+            self.holdings[6],
             coils[0],
-            coils[1],
-            coils[2],
-            coils[3],
-            coils[4],
-            coils[5]
+            coils[1]
         ]
         data_dict = {
-            'payload_size': 19,
-            'protocol': 6,
-            'num_pkts_src': 5,
-            'num_pkts_dst': 5,
-            'modbus_function_code': 6,
-            'R1': 3900,
-            'R2': 950,
-            'C1': 3080,
-            'C2': 12630,
-            'incLoad1': coils[0],
-            'decLoad1': 0,
-            'incLoad2': coils[2],
-            'decLoad2': coils[3],
-            'closeLoad1': coils[4],
-            'closeLoad2': coils[5]
+            'payload_size': payload_size,
+            'protocol': protocol,
+            'num_pkts_src': num_pkts_src,
+            'num_pkts_dst': num_pkts_dst,
+            'modbus_function_code': modbus_function_code,
+            # 'voltage': 12,
+            'temperature': self.holdings[1],
+            'humidity': self.holdings[2],
+            'pwm1': self.holdings[3],
+            'pwm2': self.holdings[4],
+            'rpm1': self.holdings[5],
+            'rpm2': self.holdings[6],
+            'motor1': coils[0],
+            'motor2': coils[1],
+            # 'closeLoad2': coils[5]
         }
         data = pd.DataFrame(data_dict, index=[0])
         # print(type(features))
@@ -279,16 +285,15 @@ class AnomalyPredictionConsumer(AsyncWebsocketConsumer):
             num_pkts_src = data[6],
             num_pkts_dst = data[7],
             modbus_function_code = data[8],
-            R1 = data[10],
-            R2 = data[11],
-            C1 = data[12],
-            C2 = data[13],
-            incLoad1 = data[14],
-            decLoad1 = data[15],
-            incLoad2 = data[16],
-            decLoad2 = data[17],
-            closeLoad1 = data[18],
-            closeLoad2 = data[19]
+            voltage = data[9],
+            temperature = data[10],
+            humidity = data[11],
+            pwm1 = data[12],
+            pwm2 = data[13],
+            rpm1 = data[14],
+            rpm2 = data[15],
+            motor1 = data[16],
+            motor2 = data[17]
         )
 
     async def periodic_task(self):
@@ -297,23 +302,29 @@ class AnomalyPredictionConsumer(AsyncWebsocketConsumer):
             print(f'Number of packets num1: {len(self.packets)}')
             if self.packets:
                 print('2')
-                eligible_packets = [packet for packet in self.packets if packet.haslayer("IP") and packet.haslayer("TCP")]
+                eligible_packets = []
+                for packet in self.packets:
+                    if packet.haslayer("IP") and packet.haslayer("TCP") and packet.haslayer(Raw):
+                        modbus_payload = packet[Raw].load
+                        if len(modbus_payload)==23:
+                            eligible_packets.append(packet)
                 if eligible_packets:
                     print('3')
                     random_packet = random.choice(eligible_packets)
                     packet = random_packet
-                    if str(packet[IP].src) == "10.7.224.212" or str(packet[IP].dst) == "10.7.224.212":
+                    if ((str(packet[IP].src) == "10.7.117.8" and str(packet[IP].dst) == "10.7.117.8") or (str(packet[IP].src) == "10.7.228.182" and str(packet[IP].dst) == "10.7.228.37")):
                         print('4')
                         if packet.haslayer(IP) and packet.haslayer(TCP):
                             print('5')
                             features, data= self.extract_features(packet)
-                            scaler = joblib.load('C:\\Users\\Maaz Ahmed\\SCADAFYP\\scalar.joblib')
+                            print(data)
+                            scaler = joblib.load('"C:\\Users\\uswa9\\Downloads\\New folder (3)\\survaillant\\web\\scalar.joblib')
                             features = scaler.transform(features)
                             
                             prediction = self.make_prediction(features)
                             print(f'Number of packets: {len(self.packets)}')
-
-                            if prediction == -1:
+                            print("prediction: ",prediction)
+                            if prediction == 1:
                                 await self.send(text_data=json.dumps({'prediction': prediction, 'data': data}))
                                 await self.create_network_traffic_entry(anomaly_packets=100, normal_packets=len(self.packets))
                                 await self.create_anomaly_entry(data)
@@ -334,7 +345,7 @@ class AnomalyPredictionConsumer(AsyncWebsocketConsumer):
 class SecurityPredictionConsumer(AsyncWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.rf_classifier = joblib.load("C:\\Users\\Maaz Ahmed\\SCADAFYP\\rfclassifier.joblib")
+        self.rf_classifier = joblib.load("C:\\Users\\uswa9\\Downloads\\New folder (3)\\survaillant\\web\\rfclassifier.joblib")
         self.packets = []
         self.pkt_timestamps_src = {}
         self.pkt_timestamps_dst = {}
@@ -410,8 +421,8 @@ class SecurityPredictionConsumer(AsyncWebsocketConsumer):
         data_dict = {
             'payload_size': 19,
             'window_size':window_size,
-            'num_pkts_src': 20,
-            'num_pkts_dst': 20,
+            'num_pkts_src': 51,
+            'num_pkts_dst': 51,
             'modbus_function_code': 0,
             'ttl_value':ttl_value,
         }
@@ -449,21 +460,23 @@ class SecurityPredictionConsumer(AsyncWebsocketConsumer):
         while True:
             print(f'Number of packets num1: {len(self.packets)}')
             if self.packets:
-                print('2')
+                # print('2')
                 eligible_packets = [packet for packet in self.packets if packet.haslayer("IP") and packet.haslayer("TCP")]
                 if eligible_packets:
-                    print('3')
+                    # print('3')
                     random_packet = random.choice(eligible_packets)
                     packet = random_packet
-                    if str(packet[IP].src) == "10.7.224.212" or str(packet[IP].dst) == "10.7.224.212":
-                        print('4')
+                    # print(str(packet[IP].src),"a")
+                    if str(packet[IP].src) == "10.7.117.8" or str(packet[IP].dst) == "10.7.117.8":
+                        # print('4')
                         if packet.haslayer(IP) and packet.haslayer(TCP):
-                            print('5')
+                            # print('5')
                             features, data = self.extract_features(packet)
-                            scaler = joblib.load('C:\\Users\\Maaz Ahmed\\SCADAFYP\\scalarrf.joblib')
+                            scaler = joblib.load('C:\\Users\\uswa9\\Downloads\\New folder (3)\\survaillant\\web\\scalarrf.joblib')
                             features = scaler.transform(features)
                             prediction = self.make_prediction(features)
-                            print(f'Number of packets: {len(self.packets)}')
+                            # print(f'Number of packets: {len(self.packets)}')
+                            # print("prediction: ",prediction)
                             if prediction == 1:
                                 await self.send(text_data=json.dumps({'prediction': prediction, 'data': data}))
                                 await self.create_security_traffic_entry(security_packets=100, normal_packets=len(self.packets))

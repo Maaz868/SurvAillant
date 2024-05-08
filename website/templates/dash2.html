@@ -5,140 +5,70 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{% static 'DashStyles.css' %}">
-    <link rel="stylesheet" href="../Header/assets/css/style.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="{% static 'DashStyle.css'%}">
     <title>Admin panel</title>
 </head>
 
 <body>
-
-    <div class="topbar">
-        <div class="logo">
-            <img src="{% static 'assets/Survaillant4.png' %} " class="image" alt="">
-        </div>
-        <div class="search">
-            <input type="text" name="search" placeholder="search here" style="display:none">
-            <label for="search"><i class="fas fa-search" style="display:none"></i></label>
-        </div>
-        <i class="bi bi-bell"></i>
-        <div class="user">
-            <img src="{% static 'assets/profile-img.png '%}" alt="">
-        </div>
-    </div>
-    <div class="sidebar">
-        <ul>
-            <li>
-                <a href="#">
-                    <i class="bi bi-grid"></i>
-                    <div>Dashboard</div>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="bi bi-activity"></i>
-                    <div>Network Activity</div>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="bi bi-exclamation-octagon"></i>
-                    <div>Alerts</div>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="toggleReport()">
-                    <i class="bi bi-chevron-down ms-auto"></i>
-                    <div>Report</div>
-                </a>
-                <ul id="report-dropdown" class="nav-content collapse" >
-                    <li>
-                        <a href="components-alerts.html">
-                            <i class="bi bi-bar-chart-line"></i> <span>Anomalies</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="components-accordion.html">
-                            <i class="bi bi-shield-exclamation"></i><span>Security Threats</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            
-            
-            
-        </ul>
-    </div>
-
-    <!-- Include the common header in a <header> element -->
-        <!--<iframe src="../Header/components-modal.html" frameborder="0"></iframe>-->
-    <!--<div class="container">
         <div class="topbar">
             <div class="logo">
-                <h2>Brand.</h2>
+                <img src="{% static 'assets/Survaillant4.png'%} " class="image" alt="">
             </div>
             <div class="search">
-                <input type="text" name="search" placeholder="search here">
-                <label for="search"><i class="fas fa-search"></i></label>
+                <input type="text" name="search" placeholder="search here" style="display:none">
+                <label for="search"><i class="fas fa-search" style="display:none"></i></label>
             </div>
-            <i class="fas fa-bell"></i>
+            <i class="bi bi-bell"></i>
             <div class="user">
-                <img src="img/user.png" alt="">
+                <img src="{% static 'assets/profile-img.png'%}" alt="">
             </div>
         </div>
+        
         <div class="sidebar">
             <ul>
                 <li>
                     <a href="#">
-                        <i class="fas fa-th-large"></i>
+                        <i class="bi bi-grid"></i>
                         <div>Dashboard</div>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
-                        <i class="fas fa-user-graduate"></i>
-                        <div>Students</div>
+                    <a href="sniff">
+                        <i class="bi bi-activity"></i>
+                        <div>Network Activity</div>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
-                        <i class="fas fa-chalkboard-teacher"></i>
-                        <div>Teachers</div>
+                    <a href="alerts">
+                        <i class="bi bi-exclamation-octagon"></i>
+                        <div>Alerts</div>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
-                        <i class="fas fa-users"></i>
-                        <div>Employees</div>
+                    <a class="nav-link " data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                        <i class="bi bi-menu-button-wide"></i><span>Reports</span><i class="bi bi-chevron-down ms-auto"></i>
                     </a>
+                    <ul id="components-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+                        <li>
+                            <a href="anomalyreports">
+                                <i class="bi bi-bar-chart-line"></i> <span>Anomalies</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="securityreports">
+                                <i class="bi bi-shield-exclamation"></i><span>Security Threats</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-chart-bar"></i>
-                        <div>Analytics</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-hand-holding-usd"></i>
-                        <div>Earnings</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-cog"></i>
-                        <div>Settings</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-question"></i>
-                        <div>Help</div>
-                    </a>
-                </li>
+                
+                
+                
             </ul>
-        </div>-->
+        </div>
         <div class="main">
             <div class="cards">
                 <div class="card1">
@@ -208,12 +138,8 @@
             </div>
     </div>
 
-    <!--<script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>-->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <!-- <script src="{% static 'chart1.js' %}"></script> -->
-
+    
     <script>
         var ctx2 = document.getElementById('doughnuts').getContext('2d');
         var security1 = "{{ total_security_count|safe |escapejs}}";
@@ -269,21 +195,19 @@
         var barchart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['TCP', 'UDP', 'Modbus', 'MQTT', 'Others'],
+                labels: ['TCP/modbus', 'UDP', 'MQTT', 'Others'],
                 datasets: [{
                     label: 'Protocols',
-                    data: [tcpCount, udpCount, modbusCount, mqttCount, othersCount],
+                    data: [tcpCount, udpCount, mqttCount, othersCount],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
                         'rgba(75, 192, 192, 0.2)',
                         'rgba(153, 102, 255, 0.2)'
                     ],
                     borderColor: [
                         'rgba(255, 99, 132, 1)',
                         'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
                         'rgba(75, 192, 192, 1)',
                         'rgba(153, 102, 255, 1)'
                     ],
@@ -346,7 +270,7 @@
         var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels:  ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'],
+            labels:  ['66s', '60s', '54s', '48s', '42s', '36s', '30s', '24s', '18s', '12s', '6s', '0s'],
             datasets: [{
                 label: 'Trend of Network Traffic',
                 data: chartData,
@@ -365,17 +289,23 @@
         });
     </script>
     <script src="{% static 'chart5.js' %}"></script>
-    <script src="{% static '../Header/assets/js/main.js"></script>
+    <script src="{% static '../Header/assets/js/main.js' %}"></script>
     <script>
         var socket1 = new WebSocket("ws://" + window.location.host + "/ws/allpackets/");
     // var socket2 = new WebSocket("ws://" + window.location.host + "/ws/securityprediction/");
 
     </script>
 
-    <!-- Include the new charts scripts -->
-    <script src="{% static 'piechart.js' %}"></script>
-    <script src="{% static 'barchart.js' %}"></script>
-
+    <script>
+        function toggleReport() {
+            var reportDropdown = document.getElementById("report-dropdown");
+            if (reportDropdown.style.display === "none" || reportDropdown.style.display === "") {
+                reportDropdown.style.display = "block";
+            } else {
+                reportDropdown.style.display = "none";
+            }
+        }
+    </script>
 </body>
 
 </html>
