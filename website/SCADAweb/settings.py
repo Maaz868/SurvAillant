@@ -33,7 +33,7 @@ SECRET_KEY = 'django-insecure-gz_-ir2&#h5!_6tuaj7982!%l1zsqhdl+bdf(im45ctblzqcbf
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['10.7.52.89','myweb.htb','survaillant.com']
 AUTH_USER_MODEL = 'webapp.CustomUser'
 
 # settings.py

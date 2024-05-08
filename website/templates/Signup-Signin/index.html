@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="{% static 'styles.css' %}">
-    <title>signin-signup</title>
+    <title>SurvAillant</title>
     
 </head>
 <body>
@@ -27,6 +27,13 @@
                     <input type="password" id="password" name="password" placeholder="Password" required>
                 </div>
                 <button type="submit" class="btn">Sign In</button>
+                <!-- {% if messages %}
+                      {% for message in messages %}
+                          <div class="alert alert-{{ message.tags }}" role="alert">
+                              {{ message }}
+                          </div>
+                      {% endfor %}
+                  {% endif %} -->
                 <p class="account-text">Don't have an account? <a href="#" id="sign-up-btn2">Sign up</a></p>
             </form>
             <form action="signup" method="post" class="sign-up-form">
@@ -75,4 +82,7 @@
     </div>
     <script src="{% static 'app.js' %}"></script>
 </body>
+<script>
+    localStorage.setItem('alertsall', JSON.stringify([]));
+</script>
 </html>

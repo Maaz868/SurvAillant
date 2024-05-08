@@ -12,12 +12,14 @@ urlpatterns = [
     path('sniff', views.sniff_packets, name='sniff_packets'),
     path("predictions", views.predictions, name="predictions"),
     path("trial", views.trial, name="trial"),
-    path('admin-panel',views.admin_panel, name="admin_panel"),
+    path('admin-panel',views.admin_panel, name='admin_panel'),
     path('approve-user/<int:user_id>/', views.approve_user, name='approve_user'),
     path('alerts',views.alerts, name="alerts"),
     path('dashboard',views.dashboard, name="dashboard"),
     path('anomalyreports',views.anomalyreports, name="anomalyreports"),
     path('securityreports',views.securityreports, name="securityreports"),
+    path('change_password', views.change_password, name='change_password'),
+
     # path('get_last_12_entries/', views.get_last_12_entries, name='get_last_12_entries'),
 ]
 

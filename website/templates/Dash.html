@@ -1,313 +1,266 @@
-<!DOCTYPE html>
-<html lang="en">
-    {% load static %}
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
-    <link rel="stylesheet" href="{% static 'DashStyle.css'%}">
-    <title>Admin panel</title>
-</head>
+{% extends "header.html" %} 
+{% block content %} 
+ {% load static %}
 
-<body>
-        <div class="topbar">
-            <div class="logo">
-                <img src="{% static 'assets/Survaillant4.png'%} " class="image" alt="">
+   <link rel="stylesheet" href="{% static 'Dash.css'%}">
+    <div class="main" style='margin-top:100px;margin-left: 260px;'>
+        <div class="cards">
+            <div class="card1">
+                <div class="card-content">
+                    <div class="number">20</div>
+                    <div class="card-name">Tiggered Alerts</div>
+                </div>
+                <div class="icon-box">
+                    <!--<i class="fa fa-exclamation-circle fa-5x"></i>-->
+                    <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+                    <span class="sr-only">Loading...</span>
+                </div>
             </div>
-            <div class="search">
-                <input type="text" name="search" placeholder="search here" style="display:none">
-                <label for="search"><i class="fas fa-search" style="display:none"></i></label>
+            <div class="card2">
+                <div class="card-content">
+                    <div class="number" id="notif">32</div>
+                    <div class="card-name">Notifications</div>
+                </div>
+                <div class="icon-box">
+                    <i class="fa fa-comments fa-5x" aria-hidden="true"></i>
+                </div>
             </div>
-            <i class="bi bi-bell"></i>
-            <div class="user">
-                <img src="{% static 'assets/profile-img.png'%}" alt="">
+            <div class="card3">
+                <div class="card-content">
+                    <div class="number">19</div>
+                    <div class="card-name">Critical</div>
+                </div>
+                <div class="icon-box">
+                    <i class="fa fa-exclamation-triangle fa-5x" aria-hidden="true"></i>
+                </div>
+            </div>
+            <div class="card4">
+                <div class="card-content">
+                    <div class="number">15</div>
+                    <div class="card-name">Warnings</div>
+                </div>
+                <div class="icon-box">
+                    <i class="fa fa-bell fa-5x" aria-hidden="true"></i>
+                </div>
             </div>
         </div>
-        
-        <div class="sidebar">
-            <ul>
-                <li>
-                    <a href="#">
-                        <i class="bi bi-grid"></i>
-                        <div>Dashboard</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="sniff">
-                        <i class="bi bi-activity"></i>
-                        <div>Network Activity</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="alerts">
-                        <i class="bi bi-exclamation-octagon"></i>
-                        <div>Alerts</div>
-                    </a>
-                </li>
-                <li>
-                    <a class="nav-link " data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-                        <i class="bi bi-menu-button-wide"></i><span>Reports</span><i class="bi bi-chevron-down ms-auto"></i>
-                    </a>
-                    <ul id="components-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
-                        <li>
-                            <a href="anomalyreports">
-                                <i class="bi bi-bar-chart-line"></i> <span>Anomalies</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="securityreports">
-                                <i class="bi bi-shield-exclamation"></i><span>Security Threats</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                
-                
-                
-            </ul>
+        <div class="charts">
+            <div class="chart">
+                <h2>Network Activity</h2>
+                <div>
+                    <canvas id="lineChart"></canvas>
+                </div>
+            </div>   
+            <div class="chart doughnut-chart">
+                <h2>Classification</h2>
+                <div>
+                    <canvas id="doughnut"></canvas>
+                </div>
+            </div>
+            <div class="chart bar-chart">
+                <h2>Protocols</h2>
+                <div>
+                    <canvas id="barchart"></canvas>
+                </div>
+            </div>
+            <div class="chart doughnut-chart">
+                <h2>Security Threats</h2>
+                <div>
+                    <canvas id="doughnuts"></canvas>
+                </div>
+            </div>
         </div>
-        <div class="main">
-            <div class="cards">
-                <div class="card1">
-                    <div class="card-content">
-                        <div class="number">1217</div>
-                        <div class="card-name">Tiggered Alerts</div>
-                    </div>
-                    <div class="icon-box">
-                        <!--<i class="fa fa-exclamation-circle fa-5x"></i>-->
-                        <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                </div>
-                <div class="card2">
-                    <div class="card-content">
-                        <div class="number">42</div>
-                        <div class="card-name">Notifications</div>
-                    </div>
-                    <div class="icon-box">
-                        <i class="fa fa-comments fa-5x" aria-hidden="true"></i>
-                    </div>
-                </div>
-                <div class="card3">
-                    <div class="card-content">
-                        <div class="number">68</div>
-                        <div class="card-name">Critical</div>
-                    </div>
-                    <div class="icon-box">
-                        <i class="fa fa-exclamation-triangle fa-5x" aria-hidden="true"></i>
-                    </div>
-                </div>
-                <div class="card4">
-                    <div class="card-content">
-                        <div class="number">45</div>
-                        <div class="card-name">Warnings</div>
-                    </div>
-                    <div class="icon-box">
-                        <i class="fa fa-bell fa-5x" aria-hidden="true"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="charts">
-                <div class="chart">
-                    <h2>Network Activity (past XYZ months)</h2>
-                    <div>
-                        <canvas id="lineChart"></canvas>
-                    </div>
-                </div>   
-                <div class="chart doughnut-chart">
-                    <h2>Classification</h2>
-                    <div>
-                        <canvas id="doughnut"></canvas>
-                    </div>
-                </div>
-                <div class="chart bar-chart">
-                    <h2>Bar Chart</h2>
-                    <div>
-                        <canvas id="barchart"></canvas>
-                    </div>
-                </div>
-                <div class="chart doughnut-chart">
-                    <h2>Pie Chart</h2>
-                    <div>
-                        <canvas id="doughnuts"></canvas>
-                    </div>
-                </div>
-            </div>
-    </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
+<script>
+    // Update the number of alerts dynamically
+  window.onload = function() {
+    // Retrieve the alerts from local storage
+    var alerts = JSON.parse(localStorage.getItem('alertsall')) || [];
     
-    <script>
-        var ctx2 = document.getElementById('doughnuts').getContext('2d');
-        var security1 = "{{ total_security_count|safe |escapejs}}";
-        var normal1 = "{{ total_normal_count1|safe |escapejs}}";
-        var security = JSON.parse(security1.replace(/'/g, '"'));
-        var normal = JSON.parse(normal1.replace(/'/g, '"'));
-        
-        var doughnut = new Chart(ctx2, {
-            type: 'doughnut',
-            data: {
-                labels: ['Security Threats', 'Normal Traffic'],
-                datasets: [{
-                    label: 'Network Traffic Analysis',
-                    data: [security, normal],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
+    // Get the length of the alerts array
+    var alertCount = alerts.length;
+  
+    // Update the badge with the number of alerts
+    var badgeElement = document.getElementById('notifCount');
+    badgeElement.textContent = alertCount;
 
-    <script>
-        // Extract protocol counts from Django context
-        var tcpCount1 = "{{ protocol_counts.tcp_count| safe | escapejs}}";
-        var udpCount1 ="{{ protocol_counts.udp_count| safe | escapejs}}";
-        var modbusCount1 = "{{ protocol_counts.modbus_count| safe | escapejs}}";
-        var mqttCount1 = "{{ protocol_counts.mqtt_count| safe | escapejs}}";
-        var othersCount1 = "{{ protocol_counts.others_count| safe | escapejs}}";
-        
+    var notif = document.getElementById('notif');
+    notif.textContent = alertCount;
+  
+    // Update the text displaying the number of alerts
+    var alertCountTextElement = document.getElementById('alertCountText');
+    alertCountTextElement.textContent = alertCount;
+  };
+  
+  </script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
 
-        var tcpCount = JSON.parse(tcpCount1.replace(/'/g, '"'));
-        var udpCount = JSON.parse(udpCount1.replace(/'/g, '"'));
-        var modbusCount = JSON.parse(modbusCount1.replace(/'/g, '"'));
-        var mqttCount = JSON.parse(mqttCount1.replace(/'/g, '"'));
-        var othersCount = JSON.parse(othersCount1.replace(/'/g, '"'));
-        
-
-        var ctx = document.getElementById('barchart').getContext('2d');
-        var barchart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['TCP', 'UDP', 'Modbus', 'MQTT', 'Others'],
-                datasets: [{
-                    label: 'Protocols',
-                    data: [tcpCount, udpCount, modbusCount, mqttCount, othersCount],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
-        
-
-    <script>
-        var ctx2 = document.getElementById('doughnut').getContext('2d');
-        var anomaly1 = "{{ total_anomaly_count|safe |escapejs}}";
-        var normal1 = "{{ total_normal_count|safe |escapejs}}";
-        var anomaly = JSON.parse(anomaly1.replace(/'/g, '"'));
-        var normal = JSON.parse(normal1.replace(/'/g, '"'));
-        
-        var doughnut = new Chart(ctx2, {
-            type: 'doughnut',
-            data: {
-                labels: ['Anomaly', 'Normal Traffic'],
-                datasets: [{
-                    label: 'Network Traffic Analysis',
-                    data: [anomaly, normal],
-                    backgroundColor: [
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                    ],
-                    borderColor: [
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
-
-    <script>
-        var ctx = document.getElementById('lineChart').getContext('2d');
-        var labels1 = "{{ labels|safe |escapejs}}";
-        var chartData1 = "{{ chart_data|safe |escapejs}}";
-        var labels = JSON.parse(labels1.replace(/'/g, '"'));
-        var chartData = JSON.parse(chartData1.replace(/'/g, '"'));
-        
-        var myChart = new Chart(ctx, {
-        type: 'line',
+<script>
+    var ctx2 = document.getElementById('doughnuts').getContext('2d');
+    var security1 = "{{ total_security_count|safe |escapejs}}";
+    var normal1 = "{{ total_normal_count1|safe |escapejs}}";
+    var security = JSON.parse(security1.replace(/'/g, '"'));
+    var normal = JSON.parse(normal1.replace(/'/g, '"'));
+    
+    var doughnut = new Chart(ctx2, {
+        type: 'doughnut',
         data: {
-            labels:  ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'],
+            labels: ['Security Threats', 'Normal Traffic'],
             datasets: [{
-                label: 'Trend of Network Traffic',
-                data: chartData,
+                label: 'Network Traffic Analysis',
+                data: [security, normal],
                 backgroundColor: [
-                    'rgba(85,85,85, 1)'
-
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
                 ],
-                borderColor: 'rgb(41, 155, 99)',
-
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)'
+                ],
                 borderWidth: 1
             }]
         },
         options: {
-            responsive: true
-        }
-        });
-    </script>
-    <script src="{% static 'chart5.js' %}"></script>
-    <script src="{% static '../Header/assets/js/main.js' %}"></script>
-    <script>
-        var socket1 = new WebSocket("ws://" + window.location.host + "/ws/allpackets/");
-    // var socket2 = new WebSocket("ws://" + window.location.host + "/ws/securityprediction/");
-
-    </script>
-
-    <script>
-        function toggleReport() {
-            var reportDropdown = document.getElementById("report-dropdown");
-            if (reportDropdown.style.display === "none" || reportDropdown.style.display === "") {
-                reportDropdown.style.display = "block";
-            } else {
-                reportDropdown.style.display = "none";
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
             }
         }
-    </script>
-</body>
+    });
+</script>
 
-</html>
+<script>
+    // Extract protocol counts from Django context
+    var tcpCount1 = "{{ protocol_counts.tcp_count| safe | escapejs}}";
+    var udpCount1 ="{{ protocol_counts.udp_count| safe | escapejs}}";
+    var modbusCount1 = "{{ protocol_counts.modbus_count| safe | escapejs}}";
+    var mqttCount1 = "{{ protocol_counts.mqtt_count| safe | escapejs}}";
+    var othersCount1 = "{{ protocol_counts.others_count| safe | escapejs}}";
+    
+
+    var tcpCount = JSON.parse(tcpCount1.replace(/'/g, '"'));
+    var udpCount = JSON.parse(udpCount1.replace(/'/g, '"'));
+    var modbusCount = JSON.parse(modbusCount1.replace(/'/g, '"'));
+    var mqttCount = JSON.parse(mqttCount1.replace(/'/g, '"'));
+    var othersCount = JSON.parse(othersCount1.replace(/'/g, '"'));
+    
+
+    var ctx = document.getElementById('barchart').getContext('2d');
+    var barchart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['TCP/modbus', 'UDP', 'MQTT', 'Others'],
+            datasets: [{
+                label: 'Protocols',
+                data: [tcpCount, udpCount, mqttCount, othersCount],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+    
+
+<script>
+    var ctx2 = document.getElementById('doughnut').getContext('2d');
+    var anomaly1 = "{{ total_anomaly_count|safe |escapejs}}";
+    var normal1 = "{{ total_normal_count|safe |escapejs}}";
+    var anomaly = JSON.parse(anomaly1.replace(/'/g, '"'));
+    var normal = JSON.parse(normal1.replace(/'/g, '"'));
+    
+    var doughnut = new Chart(ctx2, {
+        type: 'doughnut',
+        data: {
+            labels: ['Anomaly', 'Normal Traffic'],
+            datasets: [{
+                label: 'Network Traffic Analysis',
+                data: [anomaly, normal],
+                backgroundColor: [
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                ],
+                borderColor: [
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+<script>
+    var ctx = document.getElementById('lineChart').getContext('2d');
+    var labels1 = "{{ labels|safe |escapejs}}";
+    var chartData1 = "{{ chart_data|safe |escapejs}}";
+    var labels = JSON.parse(labels1.replace(/'/g, '"'));
+    var chartData = JSON.parse(chartData1.replace(/'/g, '"'));
+    
+    var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels:  ['66s', '60s', '54s', '48s', '42s', '36s', '30s', '24s', '18s', '12s', '6s', '0s'],
+        datasets: [{
+            label: 'Trend of Network Traffic',
+            data: chartData,
+            backgroundColor: [
+                'rgba(85,85,85, 1)'
+
+            ],
+            borderColor: 'rgb(41, 155, 99)',
+
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true
+    }
+    });
+</script>
+<script src="{% static 'chart5.js' %}"></script>
+<script src="{% static '../Header/assets/js/main.js' %}"></script>
+<script>
+    var socket1 = new WebSocket("ws://" + window.location.host + "/ws/allpackets/");
+// var socket2 = new WebSocket("ws://" + window.location.host + "/ws/securityprediction/");
+
+</script>
+
+<script>
+    function toggleReport() {
+        var reportDropdown = document.getElementById("report-dropdown");
+        if (reportDropdown.style.display === "none" || reportDropdown.style.display === "") {
+            reportDropdown.style.display = "block";
+        } else {
+            reportDropdown.style.display = "none";
+        }
+    }
+</script>
+
+    {% endblock %}

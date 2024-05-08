@@ -1,195 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "header.html" %} 
+{% block content %} 
 
-{% load static %}
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-  <title>Users / Profile - NiceAdmin Bootstrap Template</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
-
-  <!-- Favicons -->
-  <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
-  <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
-  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/quill/quill.snow.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/quill/quill.bubble.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/simple-datatables/style.css' %}" rel="stylesheet">
-
-  <!-- Template Main CSS File -->
-  <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
-  <link href="{% static 'userstyle.css' %}" rel="stylesheet">
-
-  <!-- =======================================================
-  * Template Name: NiceAdmin
-  * Updated: Jan 29 2024 with Bootstrap v5.3.2
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
-</head>
-
-<body>
-
- <!-- ======= Header ======= -->
- <header id="header" class="header fixed-top d-flex align-items-center">
-
-  <div class="d-flex align-items-center justify-content-between">
-
-      <img src="{% static 'assets/img/Survaillant4.png' %}" class="image d-flex align-items-center" alt="">
-      <i class="bi bi-list toggle-sidebar-btn"></i>
-      
-  </div><!-- End Logo -->
-
- 
-
-  <nav class="header-nav ms-auto">
-    <ul class="d-flex align-items-center">
-
-      <li class="nav-item d-block d-lg-none">
-        <a class="nav-link nav-icon search-bar-toggle " href="#">
-          <i class="bi bi-search"></i>
-        </a>
-      </li><!-- End Search Icon-->
-
-      <li class="nav-item dropdown">
-
-        <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-          <i class="bi bi-bell"></i>
-          <span class="badge bg-primary badge-number">4</span>
-        </a><!-- End Notification Icon -->
-
-        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-          <li class="dropdown-header">
-            You have 4 new alerts
-            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-          </li>
-          
-
-         
-
-         
-
-        </ul><!-- End Notification Dropdown Items -->
-
-      </li><!-- End Notification Nav -->
-
-     
-
-
-      <li class="nav-item dropdown pe-3">
-
-        <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-          <img src="{% static 'assets/img/profile-img.jpg' %}" alt="Profile" class="rounded-circle">
-          <span class="d-none d-md-block dropdown-toggle ps-2"></span>
-        </a><!-- End Profile Iamge Icon -->
-
-        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-          <li class="dropdown-header">
-            <h6>SCADA Admin</h6>
-          </li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-
-          <li>
-            <a class="dropdown-item d-flex align-items-center" href="admin-panel">
-              <i class="bi bi-gear"></i>
-              <span>User Settings</span>
-            </a>
-          </li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-
-          
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-
-          <li>
-            <a class="dropdown-item d-flex align-items-center" href="signout">
-              <i class="bi bi-box-arrow-right"></i>
-              <span>Sign Out</span>
-            </a>
-          </li>
-
-        </ul><!-- End Profile Dropdown Items -->
-      </li><!-- End Profile Nav -->
-
-    </ul>
-  </nav><!-- End Icons Navigation -->
-
-</header><!-- End Header -->
-<!-- ======= Sidebar ======= -->
-<aside id="sidebar" class="sidebar">
-
-  <ul class="sidebar-nav" id="sidebar-nav">
-
-    <li class="nav-item">
-      <a class="nav-link collapsed" href="dashboard">
-        <i class="bi bi-grid"></i>
-        <span>Dashboard</span>
-      </a>
-    </li><!-- End Dashboard Nav -->
-
-    <li class="nav-item">
-      <a class="nav-link collapsed" href="sniff">
-        <i class="bi bi-activity"></i>
-        <span>Network Activity</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link collapsed" href="alerts">
-        <i class="bi bi-exclamation-octagon"></i>
-        <span>Alerts</span>
-      </a>
-    </li>
-
-    <li class="nav-item">
-      <a class="nav-link " data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-menu-button-wide"></i><span>Reports</span><i class="bi bi-chevron-down ms-auto"></i>
-      </a>
-      <ul id="components-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
-        <li>
-          <a href="anomalyreports">
-           <i class="bi bi-bar-chart-line"></i> <span>Anomalies</span>
-          </a>
-        </li>
-        <li>
-          <a href="securityreports">
-            <i class="bi bi-shield-exclamation"></i><span>Security Threats</span>
-          </a>
-        </li>
-      </ul>
-    </li><!-- End Components Nav -->
-
-    
-   
-
-
-   
-  
-
-  </ul>
-
-</aside><!-- End Sidebar-->
-
- 
 
   <main id="main" class="main">
 
@@ -206,14 +17,14 @@
             <div class="card-body pt-3">
               <!-- Bordered Tabs -->
               <ul class="nav nav-tabs nav-tabs-bordered">
-
+                
                 <li class="nav-item">
                   <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
                 </li>
 
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                   <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
-                </li>
+                </li> -->
 
                 <li class="nav-item">
                   <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Manage Permissions</button>
@@ -227,40 +38,40 @@
               <div class="tab-content pt-2">
 
                 <div class="tab-pane fade show active profile-overview" id="profile-overview">
-                 
+                  
 
                   <h5 class="card-title">Profile Details</h5>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label ">SCADA Administrator</div>
-                    <div class="col-lg-9 col-md-8">Specify your name</div>
+                    <div class="col-lg-9 col-md-8">{{ current_user.username }}</div>
                   </div>
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label ">Email</div>
-                    <div class="col-lg-9 col-md-8">Specify your email</div>
+                    <div class="col-lg-9 col-md-8">{{ current_user.email }}</div>
                   </div>
 
                   <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Company</div>
-                    <div class="col-lg-9 col-md-8">Please Specifiy</div>
+                    <div class="col-lg-3 col-md-4 label">Date Joined</div>
+                    <div class="col-lg-9 col-md-8">{{ current_user.date_joined }}</div>
                   </div>
+                  {% if messages %}
+                      {% for message in messages %}
+                          <div class="alert alert-{{ message.tags }}" role="alert">
+                              {{ message }}
+                          </div>
+                      {% endfor %}
+                  {% endif %}
 
-                  <div class="row">
-                    <div class="col-lg-3 col-md-4 label ">SCADA Location</div>
-                    <div class="col-lg-9 col-md-8">Specify your location</div>
-                  </div>
-                  <div class="row">
-                    <div class="col-lg-3 col-md-4 label ">Total PLCs</div>
-                    <div class="col-lg-9 col-md-8">Specify total PLC</div>
-                  </div>
+                  
  
 
                 </div>
 
-                <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+                <!-- <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                   <!-- Profile Edit Form -->
-                  <form>
+                  <!-- <form>
                     
 
                     <div class="row mb-3">
@@ -302,7 +113,7 @@
                     </div>
                   </form><!-- End Profile Edit Form -->
 
-                </div>
+                <!-- </div> --> 
 
                 <div class="tab-pane fade pt-3" id="profile-settings">
 
@@ -314,9 +125,9 @@
                                 <div class="alert alert-primary alert-dismissible fade show" role="alert" style="display: flex; align-items: center;">
                                     <p class="permissions">{{ user.username }} has requested access to Survaillant.</p>
                                     <hr>
-                                    <div class="button-container">
+                                    <div class="button-container " style="padding-left:50px;">
                                         <a href="{% url 'approve_user' user_id=user.id %}" class="btn btn-primary rounded-pill">Approve</a>
-                                        <button class="btn btn-danger rounded-pill">Deny</button>
+                                        <button style="margin-left:15px;" class="btn btn-danger rounded-pill">Deny</button>
                                     </div>
                                 </div>
                             </div>
@@ -329,36 +140,32 @@
 
                 <div class="tab-pane fade pt-3" id="profile-change-password">
                   <!-- Change Password Form -->
-                  <form>
-
+                  <form id="changePasswordForm" method="post" action="{% url 'change_password' %}">
+                    {% csrf_token %}
                     <div class="row mb-3">
-                      <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="password" type="password" class="form-control" id="currentPassword">
-                      </div>
+                        <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
+                        <div class="col-md-8 col-lg-9">
+                            <input name="current_password" type="password" class="form-control" id="currentPassword">
+                        </div>
                     </div>
-
                     <div class="row mb-3">
-                      <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="newpassword" type="password" class="form-control" id="newPassword">
-                      </div>
+                        <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
+                        <div class="col-md-8 col-lg-9">
+                            <input name="new_password" type="password" class="form-control" id="newPassword">
+                        </div>
                     </div>
-
                     <div class="row mb-3">
-                      <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="renewpassword" type="password" class="form-control" id="renewPassword">
-                      </div>
+                        <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
+                        <div class="col-md-8 col-lg-9">
+                            <input name="renew_password" type="password" class="form-control" id="renewPassword">
+                        </div>
                     </div>
-
                     <div class="text-center">
-                      <button style="background-color:#36476B" class="btn btn-primary">Change Password</button>
+                        <button style="background-color:#36476B" type="submit" class="btn btn-primary">Change Password</button>
                     </div>
-                  </form><!-- End Change Password Form -->
-
-                </div>
-
+                </form>
+              </div>
+              
               </div><!-- End Bordered Tabs -->
 
             </div>
@@ -370,23 +177,5 @@
 
   </main><!-- End #main -->
 
-  
-
-  
-
-  <!-- Vendor JS Files -->
-  <script src="{% static 'assets/vendor/apexcharts/apexcharts.min.js' %}"></script>
-  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-  <script src="{% static 'assets/vendor/chart.js/chart.umd.js' %}"></script>
-  <script src="{% static 'assets/vendor/echarts/echarts.min.js' %}"></script>
-  <script src="{% static 'assets/vendor/quill/quill.min.js' %}"></script>
-  <script src="{% static 'assets/vendor/simple-datatables/simple-datatables.js' %}"></script>
-  <script src="{% static 'assets/vendor/tinymce/tinymce.min.js' %}"></script>
-  <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
-
-  <!-- Template Main JS File -->
-  <script src="{% static 'assets/js/main.js' %}"></script>
-
-</body>
-
-</html>
+{% endblock %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

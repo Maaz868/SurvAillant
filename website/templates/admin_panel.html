@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Admin Panel</title>
-</head>
-<body>
+{% extends "header.html" %} 
+{% block content %} 
+
     <h1>Admin Panel</h1>
     <!-- Your admin panel content here -->
     <table>
@@ -29,5 +26,4 @@
           {% endfor %}
         </tbody>
       </table>
-</body>
-</html>
+      {% endblock %}

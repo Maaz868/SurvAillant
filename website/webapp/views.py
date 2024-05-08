@@ -14,6 +14,59 @@ from django.db.models import Sum
 def home(request):
     return render(request, 'webapp/index.html')
 
+
+
+def change_password(request):
+    if request.method == 'POST':
+        current_password = request.POST.get('current_password')
+        new_password = request.POST.get('new_password')
+        renew_password = request.POST.get('renew_password')
+        # print(current_password,new_password)
+        # return redirect('admin_panel')
+        current = CustomUser.objects.filter(id=request.user.id)[0]
+        username = current.username
+
+        user = authenticate(request, username=username, password=current_password)
+        if user:
+            if new_password != renew_password:
+                messages.error(request, 'Passwords do not match.')
+                return redirect('admin_panel')
+            else:
+                
+                user.set_password(new_password)
+                user.save()
+                login(request, user)
+                unapproved_users =  CustomUser.objects.filter(is_user_approved=False)
+                # print(unapproved_users)
+                current_user = CustomUser.objects.filter(id=request.user.id)
+
+                # print(current_user[1])
+                context={
+                    'unapproved_users':unapproved_users,
+                    'current_user':current_user[0],
+                }
+                
+                return redirect('dashboard')
+                messages.success(request, 'Password changed successfully.')
+                # return redirect('admin_panel')
+                # return render(request, 'users-profile.html',context=context)
+        
+                
+        else:
+            messages.error(request, 'The old password entered is incorrect.')   
+            return redirect('admin_panel')
+        # print("user: ",username)
+        # return redirect('admin_panel')
+
+    return render(request, 'users-profile.html')
+        
+        # # Add your password change logic here
+        
+        # messages.success(request, 'Password changed successfully.')
+        # return redirect('success_url')  # Redirect to a success page after password change
+
+
+
 def signup(request):
     try:
         logout(request)
@@ -54,13 +107,13 @@ def signin(request):
         if user is not None:
             login(request, user)
             fname = user.username
-            print(user,user.is_authenticated)
+            # print(user,user.is_authenticated)
             return redirect('dashboard')
             # print(user.is_authenticated)
             # return render(request, 'webapp/index.html', {'fname': fname})
         else:
             messages.error(request, "Bad Credentials")
-            return redirect('Signup-Signin/index.html')
+            return redirect('signin')
 
     return render(request, 'Signup-Signin/index.html')
 
@@ -89,9 +142,13 @@ def predictions(request):
 def admin_panel(request):
 
     unapproved_users =  CustomUser.objects.filter(is_user_approved=False)
+    # print(unapproved_users)
+    current_user = CustomUser.objects.filter(id=request.user.id)
 
+    # print(current_user[1])
     context={
         'unapproved_users':unapproved_users,
+        'current_user':current_user[0],
     }
     return render(request, 'users-profile.html',context)
 
@@ -175,3 +232,6 @@ def securityreports(request):
     context = {'security': security}
     return render(request, 'security-threat.html', context)
 
+
+
+# from django.contrib.auth.hashers import check_password

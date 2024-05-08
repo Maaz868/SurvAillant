@@ -7,9 +7,9 @@
 }
 
 body {
-  font-family: "Nunito", sans-serif;
-  background: #fff;
-  
+  font-family: "Open Sans", sans-serif;
+  background: #f6f9ff;
+  color: #444444;
 }
 
 a {
@@ -39,12 +39,6 @@ h6 {
   padding: 20px 30px;
   transition: all 0.3s;
 }
-.tbl-fixed {
-  overflow-x: scroll;
-  overflow-y:scroll;
-  max-height: 80vh;
-}
-
 
 @media (max-width: 1199px) {
   #main {
@@ -234,13 +228,6 @@ h6 {
 .btn-close {
   background-size: 25%;
 }
-.btn{
-  background-color: #36476B;
-}
-.btn:hover {
-  color: white;
-  background: #38b6ff;
-}
 
 .btn-close:focus {
   outline: 0;
@@ -307,16 +294,11 @@ h6 {
 # Header
 --------------------------------------------------------------*/
 .image{
-  
-  height: 30px;
-
-  padding-left: 30px;
+  height:70px;
+ 
+  padding-left:30px;
 }
 
-.image2 {
-  height: 30px;
-
-}
 .logo {
   line-height: 1;
 }
@@ -345,6 +327,7 @@ h6 {
   height: 70px;
   box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
   background-color: #fff;
+  padding-left: 10px;
   /* Toggle Sidebar Button */
   /* Search Bar */
 }
@@ -369,7 +352,7 @@ h6 {
     right: 0;
     padding: 20px;
     box-shadow: 0px 0px 15px 0px rgba(1, 41, 112, 0.1);
-    background-color: white;
+    background-color: #efebeb;
     z-index: 9999;
     transition: 0.3s;
     visibility: hidden;
@@ -553,7 +536,7 @@ h6 {
 }
 
 .header-nav .profile .dropdown-item:hover {
-  background-color: #f6f9ff;
+  background-color: #efebeb;
 }
 .image{
   height:50px;
@@ -584,9 +567,6 @@ h6 {
 @media (max-width: 1199px) {
   .sidebar {
     left: -300px;
-  }
-  #table-section{
-    margin-left:10px;
   }
 }
 
