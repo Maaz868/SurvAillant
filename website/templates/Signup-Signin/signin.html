@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <title>signin-signup</title>
+    
+</head>
+<body>
+    <div class="container">
+        <div class="signin-signup">
+            <form action="signin" method="post" class="sign-in-form">
+                {% csrf_token %}
+                <h2 class="title">Sign in</h2>
+                <p class="social-text">Sign in and start managing your account</p>
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="username" name="username" placeholder="Username" required>
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn">Sign In</button>
+                <p class="account-text">Don't have an account? <a href="#" id="sign-up-btn2">Sign up</a></p>
+            </form>
+            <form action="signup" method="post" class="sign-up-form">
+                {% csrf_token %}
+                <h2 class="title">Sign up</h2>
+                <p class="social-text">Enter information to create an account</p>
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="username" name="username" required placeholder="Username">
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="email" name="email" placeholder="Email Address" required>
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
+                </div>
+                <button type="submit" class="btn">Sign Up</button>
+                <p class="account-text">Already have an account? <a href="#" id="sign-in-btn2">Sign in</a></p>
+            </form>
+        </div>
+        <div class="panels-container">
+            <div class="panel left-panel">
+                <div class="content">
+                    <h3>SurvAillant</h3>
+                    <p>Already a member!<br>Sign in and start managing your account.</p>
+                    <button class="btn" id="sign-in-btn">Sign in</button>
+                </div>
+                <img src="{% static 'image.png' %}" alt="" class="image">
+            </div>
+            <div class="panel right-panel">
+                <div class="content">
+                    <h3>SurvAillant</h3>
+                    <p>Securing SCADA Based Systems through Proactive Monitoring, audit and Control<br><br>Don't 
+                    have a account?</p>
+                    <button class="btn" id="sign-up-btn">Sign up</button>
+                </div>
+                <img src="{% static 'image.png' %}" alt="" class="image">
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'app.js' %}"></script>
+</body>
+</html>
