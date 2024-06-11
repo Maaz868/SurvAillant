@@ -3,7 +3,7 @@
 
 This project enhances the security of SCADA devices by developing a comprehensive system for real-time monitoring and threat detection between supervisory control and PLCs.
 
-![SurvAIllant](fyp1.png)
+![SurvAIllant](fyp1.PNG)
 **_Built using Ignition, Node-RED, Wireshark, Django, and various Python libraries._**
 
 ## 🚀 Objectives
