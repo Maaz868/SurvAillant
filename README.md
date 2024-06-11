@@ -23,7 +23,7 @@ This project enhances the security of SCADA devices by developing a comprehensiv
 
 ## 💡 Work Included
 
-![Work Completed](fyp2.png)
+![Work Completed](fyp2.PNG)
 
 ## How to Build and Run
 
